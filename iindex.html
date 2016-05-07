@@ -8,8 +8,27 @@
         <link rel="stylesheet" href="css/reset.css" type="text/css">
         <link rel="stylesheet" href="css/main.css" type="text/css">
         <title>The Game of Life</title>
+
+
     </head>
     <body>
+        <div class="info">
+            <div class="row">
+                <div class="col-xs-4">
+                    <h2>avatar</h2>
+                </div>
+
+                <div class="col-xs-4">
+                    <h2>money</h2>
+                    <h1 class="main-info money">$3402035</h1>
+                </div>
+
+                <div class="col-xs-4">
+                    <h2>credit score</h2>
+                    <h1 class="main-info credit">240</h1>
+                </div>
+            </div>
+        </div>
 
         <!--
             <div class="container-fluid">
@@ -97,31 +116,16 @@
                         <div class="tab-pane" id="money">
                             <div class="inner-tab-pane">
 
-                                <div class="info">
-                                    <div class="row">
-                                        <div class="col-xs-4">
-                                            <h2>avatar</h2>
-                                        </div>
-
-                                        <div class="col-xs-4">
-                                            <h2>money</h2>
-                                            <h1 class="main-info money">$3402035</h1>
-                                        </div>
-
-                                        <div class="col-xs-4">
-                                            <h2>credit score</h2>
-                                            <h1 class="main-info credit">240</h1>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="container graph-container">
-
                                     <div class="graph col-xs-12">
                                     </div>
                                 </div>
 
-                                <button class="btn btn-primary apply">Apply for loan</button>
+                                <button class="btn btn-primary apply-small">Apply for school loan</button>
+                                <button class="btn btn-primary apply-medium">Apply for car loan</button>
+                                <button class="btn btn-primary apply-large">Apply for house loan</button>
+                                <button class="btn btn-primary apply-x-large">Apply for investment loan</button>
                                 <ul class="loans buttons"> </ul>
 
                             </div>
@@ -139,8 +143,20 @@
 
 $(document).ready(function (){
     $('#tabs').tab();
-    $(".apply").click(function() {
-        var loan = getLoan();
+    $(".apply-small").click(function() {
+        var loan = getLoan(10);
+        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+    });
+    $(".apply-medium").click(function() {
+        var loan = getLoan(100);
+        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+    });
+    $(".apply-large").click(function() {
+        var loan = getLoan(1000);
+        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+    });
+    $(".apply-x-large").click(function() {
+        var loan = getLoan(10000);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
     });
 });

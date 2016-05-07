@@ -11,22 +11,10 @@ h2 {
   font-size:18px; 
 }
 
-.top_bar {
-  background-color: #EAEAEA;
-}
-
-.header {
-   padding: none !important;
-   margin: none !important;
-   background-color: green;
-}
 
 .tab {
    margin-bottom:0px;
-   background-color:red;
-}
-.tab:hover{
-    background-color:red !important;
+   background-color:white;
 }
 .tab-left {
    margin-bottom:0px;
@@ -37,12 +25,17 @@ h2 {
    margin-right: 50px;
 }
 .info {
+    text-align: center;
     background-color:#C0392B;
     border-radius: 7px;
     box-shadow: inset 1px 1px 2px #000;
     height: 150px;
     margin: 10px;
     color: white;
+}
+
+body {
+    position: absolute;
 }
 .graph {
     width: 100%;

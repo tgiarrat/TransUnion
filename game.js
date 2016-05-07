@@ -15,20 +15,20 @@ moneyHistory.push({time: 0, money: money});
 creditHistory.push({time: 0, credit: creditScore});
 
 function updateStats() {
-    $(".money").html(money);
-    $(".credit").html(creditScore);
+    $(".money").html(money.toFixed(2));
+    $(".credit").html(creditScore.toFixed(2));
 
     var time = new Date().getTime() - startTime / 10000;
     moneyHistory.push({time: time, money: money});
     creditHistory.push({time: time, credit: creditScore});
 }
 
-function getLoan() {
+function getLoan(scale) {
     var loanNames = ["Car", "House", "Food", "School"];
 
     var name = loanNames[Math.floor(Math.random() * loanNames.length)];
     var dpr = 0.4 * ((1000-creditScore) / 1000) * Math.random();
-    var amount = Math.ceil(Math.pow(10, Math.random() * 6 + 2) * Math.random());
+    var amount = Math.ceil(Math.random() * scale + scale);
 
     var length = Math.floor(Math.random() * (DAY * 5) + DAY);
     var numPayments = Math.floor(Math.random() * 20 + 5);
@@ -146,13 +146,14 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
-        this.draw.call(this);
-        this.button.removeClass('disabled');
-        this.domParent.prepend(this.dom);
+        //this.draw.call(this);
+        //this.button.removeClass('disabled');
+        //this.domParent.prepend(this.dom);
 
-        setTimeout(function (me) {
-            me.endOfPeriod.call(me);
-        }, nextPaymentDate - (new Date()).getTime(), this);
+        //setTimeout(function (me) {
+        //    me.endOfPeriod.call(me);
+        //}, nextPaymentDate - (new Date()).getTime(), this);
+        this.endOfPeriod.call(this);
 
     };
 }
