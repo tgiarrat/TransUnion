@@ -350,7 +350,7 @@ var drawAsset = function(){
 
     this.dom = $("<li><div class='asset'><div class='row'>" +
             "<h3>" + this.name + "</h3>" +
-            "<button class='btn btn-inverse'>" + (this.storeAsset ?"Purchase":"Liquidate") + moneyHtml(this.price)+ "</button>" +
+            "<button class='btn btn-inverse'>" + (this.storeAsset ?"Buy $":"Sell $") + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
     this.dataDom = $("<div class='asset-information'><div class='row'>" +
