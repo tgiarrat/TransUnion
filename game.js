@@ -28,21 +28,23 @@ function updateStats() {
     $("#balance").html(money.toFixed(2));
     $("#credit").html(creditScore.toFixed(2));
 
-    var time = new Date().getTime() - startTime / 10000;
+    var time = new Date().getTime() - startTime / 1000;
     moneyHistory.push({time: time, money: money});
     creditHistory.push({time: time, credit: creditScore});
+    plotGraph();
 }
 
 function addMoney(delta) {
     money += delta;
     $("#balance").html(money.toFixed(2));
-    var time = new Date().getTime() - startTime / 10000;
+    var time = new Date().getTime() - startTime / 1000;
     moneyHistory.push({time: time, money: money});
+    plotGraph();
 }
 function addCredit(delta) {
     creditScore += delta;
     $("#credit").html(creditScore.toFixed(2));
-    var time = new Date().getTime() - startTime / 10000;
+    var time = new Date().getTime() - startTime / 1000;
     creditHistory.push({time: time, creditScore: creditScore});
 }
 
@@ -210,6 +212,8 @@ function Task(name, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skill
     this.rewardCS = rewardCS;
 
     this.running = false;
+
+    this.isKill = false;
 }
 
 var initTask = function (domParent) {
@@ -219,7 +223,8 @@ var initTask = function (domParent) {
 };
 
 var destroyTask = function() {
-    this.complete = true;
+    this.running = false;
+    this.kill = true;
     this.dom.remove();
 };
 
@@ -229,7 +234,7 @@ var completeTask = function() {
     addCredit(this.rewardCS);
 
     if (this.oneTime) {
-        this.destroyTask();
+        destroyTask.call(this);
     }
     this.button.removeClass('disabled');
 };
@@ -306,9 +311,11 @@ var initAsset = function(storeAsset, parentDom, infoDom) {
 
 var sellAsset = function(parentSellDom) {
     if (!this.storeAsset) {
-        for (var task in this.tasks) {
+        for (var i = 0; i < this.tasks.length; i ++) {
+            var task = this.tasks[i];
             destroyTask.call(task);
         }
+
         addMoney(this.baseValue);
 
         this.dom.remove();
@@ -368,29 +375,29 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
-    basic: (function() {return new Task("Do chores",5* MINUITE, 20, 0)})(),
-    work: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
+    basic: (function() {return new Task("Do chores",5* MINUITE, 20, 0)}),
+    work: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
+    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
+    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
 
-    bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)})(),
-    bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)})(),
-    bnbMansion: (function() {return new Task("Air BNB Apartment", WEEK, 20000, 0)})(),
+    bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)}),
+    bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)}),
+    bnbMansion: (function() {return new Task("Air BNB Apartment", WEEK, 20000, 0)}),
 
-    uber: (function() {return new Task("Uber", DAY, 200, 0)})(),
-    getMarried: (function() {return new Task("Uber", DAY, 200, 0)})(),
+    uber: (function() {return new Task("Uber", DAY, 200, 0)}),
+    getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
 };
 
 // POPULATE ITEMS
 var ALL_ITEMS = [
-    new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment], 30000, {}),
-    new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse], 150000, {}),
-    new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion], 150000, {}),
+    new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment()], 30000, {}),
+    new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}),
+    new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
 
-    new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic], 60, {}),
+    new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic()], 60, {}),
     new Asset("Scooter", "./mansion.jpg", [], 30, {}),
-    new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
-    new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
+    new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
+    new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
 
     new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
     new Asset("747", "./mansion.jpg", [], 150000, {}),
@@ -413,7 +420,7 @@ for (var i = 0; i < ALL_ITEMS.length; i ++) {
     initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
 }
 
-var SELECTED_TASKS = [ALL_TASKS.basic];
+var SELECTED_TASKS = [ALL_TASKS.basic()];
 
 for (var i = 0; i < SELECTED_TASKS.length; i ++) {
     var task = SELECTED_TASKS[i];
