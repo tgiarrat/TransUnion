@@ -59,13 +59,13 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.dpr = dpr;
 
     this.draw = function(){
-        this.dom = $("<li><div class='loan'><div class='row'><div class='col-xs-8'>" +
+        this.dom = $(" <div class='loan'>" +
                 "Loan " + this.name + " - Balance: <b class='balance'>" + this.balance + "</b>"+
                 "<br>Payment amount: <b class='payment'>" + Math.floor(this.payment) + "</b>" +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
                 "<br>Time left until next payment: <h4 class='time-left'></h4>"+
-                "</div><div class='col-xs-4'><button class='btn btn-inverse'>Make Payment</button>" +
-                "</div></div></div></li>");
+                "<button class='btn btn-inverse'>Make Payment</button></div>" +
+                "");
 
         this.button = this.dom.find('button');
         this.paymentDom = this.dom.find('.payment');
