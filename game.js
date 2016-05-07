@@ -22,10 +22,6 @@ moneyHistory.push({time: 0, money: money});
 creditHistory.push({time: 0, credit: creditScore});
 
 
-
-
-
-
 function updateStats() {
     $(".money").html(money.toFixed(2));
     $(".credit").html(creditScore.toFixed(2));
@@ -252,13 +248,13 @@ var startTask = function() {
 
 
 var drawTask = function(){
-    this.dom = $("<li><div class='task'><div class='row'>" +
-            "<h3>" + this.name + "</h3><br>" +
-            "Payout: <b class='reward'>" + Math.floor(this.reward) + "</b><br>" +
-            "Comletion time: <b class='completion-time'> " + Math.floor(this.time) + "</b><br>"+
-            "<br>Time left until next payment: <h4 class='time-left'></h4>"+
-            "<button class='btn btn-inverse'>Make Payment</button>" +
-            "</div></div></li>");
+    this.dom = $(" <div class='task'>" +
+            "<h3>" + this.name + "</h3>"+
+            "<br>Time: <b class='completion-time'>" + Math.floor(this.time) + "</b>" +
+            "<br>Profits: " + moneyHtml(this.rewardMoney) + 
+            "<br>Time left: <h4 class='time-left'></h4>"+
+            "<button class='btn btn-inverse start-task'>Start</button></div>" +
+            "");
 
     this.button = this.dom.find('button');
 
@@ -384,7 +380,7 @@ var ALL_ITEMS = [
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
     var asset = ALL_ITEMS[i];
-    initAsset.call(asset, 1, $('.store'), $('.asset-info'));
+    initAsset.call(asset, 1, $('.store'), $('.asset-info-filler'));
 }
 
 
