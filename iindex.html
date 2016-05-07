@@ -1,131 +1,151 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/4.3.0/css/flat-ui.css">
-    <link rel="stylesheet" href="css/reset.css" type="text/css">
-    <link rel="stylesheet" href="css/main.css" type="text/css">
-    <title>The Game of Life</title>
-  </head>
-  <body>
-
-    <div class="container-fluid">
-      <div class="row top_bar">
-        <div class="col-xs-4 head_item_wrapper">
-          <h1 class="">R. Quan</h1>
-        </div>
-
-        <div class="col-xs-4 head_item_wrapper">
-          <h1 class="occupation_wrapper">Student</h1>
-        </div>
-
-        <div class="col-xs-4 head_item_wrapper">
-          <h1 class="money">$$$$$$</h1>
-        </div>
-      </div>
-    </div>
-
-    <div class="content">
-        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
-          <li class="active"><a href="#assets" data-toggle="tab">Assets</a></li>
-          <li ><a href="#tasks" data-toggle="tab">Tasks</a></li>
-          <li ><a href="#money" data-toggle="tab">Money</a></li>
-        </ul>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/vendor/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css">
 
 
+        <link rel="stylesheet" href="css/reset.css" type="text/css">
+        <link rel="stylesheet" href="css/main.css" type="text/css">
+        <title>The Game of Life</title>
+    </head>
+    <body>
 
-    <!--   MAIN CONTENT   -->
+        <!--
+            <div class="container-fluid">
+            <div class="row top_bar">
+            <div class="col-xs-4 head_item_wrapper">
+            <h1 class="">R. Quan</h1>
+            </div>
 
+            <div class="col-xs-4 head_item_wrapper">
+            <h1 class="occupation_wrapper">Student</h1>
+            </div>
 
-   <div id="my-tab-content" class="tab-content">
-   <div class="tab-pane active" id="assets">
+            <div class="col-xs-4 head_item_wrapper">
+            <h1 class="money">$$$$$$</h1>
+            </div>
+            </div>
+            </div>
+        -->
 
-
-    <div class="list-group">
-      <a href="#" class="list-group-item active">
-        <h4 class="list-group-item-heading">assets group item heading</h4>
-        <p class="list-group-item-text">...</p>
-      </a>
-
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading">List group item heading</h4>
-        <p class="list-group-item-text">...</p>
-      </a>
-
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading">List group item heading</h4>
-        <p class="list-group-item-text">...</p>
-      </a>
-    </div>
-    </div>
-    <!----------------------
-      |                    |
-      |  THIS IS PAGE TWO  | 
-      |         lol        |
-      ---------------------->
-      <div class="tab-pane" id="tasks">
-
-
-      <div class="list-group">
-        <a href="#" class="list-group-item active">
-          <h4 class="list-group-item-heading">tasks group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">List group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">List group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-      </div>
-      </div>
-          <!----------------------
-      |                    |
-      |  THIS IS PAGE THREE  | 
-      |         lol        |
-      ---------------------->
-      <div class="tab-pane" id="money">
-      <div class="container">
-
-        <div class="col-xs-12">
-          <img class="graph_image" src="images/graphs.jpg" alt="chart">
-        </div>
-      </div>
-
-      <div class="list-group">
-        <a href="#" class="list-group-item active">
-          <h4 class="list-group-item-heading">money group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">List group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">List group item heading</h4>
-          <p class="list-group-item-text">...</p>
-        </a>
-      </div>
-      </div>
-      </div>
+        <div class="content">
+            <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
+                <li class="tab tab-left active"><a href="#assets" data-toggle="tab">Assets</a></li>
+                <li class="tab"><a href="#tasks" data-toggle="tab">Tasks</a></li>
+                <li class="tab tab-right"><a href="#money" data-toggle="tab">Money</a></li>
+            </ul>
 
 
 
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/vendor/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-      <script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $('#tabs').tab();
+            <!--   MAIN CONTENT   -->
+
+            <div id="my-tab-content" class="tab-content">
+                <div class="tab-pane active" id="assets">
+                    <div class="inner-tab-pane">
+
+                        <div class="list-group">
+                            <a href="#" class="list-group-item active">
+                                <h4 class="list-group-item-heading">assets group item heading</h4>
+                                <p class="list-group-item-text">...</p>
+                            </a>
+
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">...</p>
+                            </a>
+
+                            <a href="#" class="list-group-item">
+                                <h4 class="list-group-item-heading">List group item heading</h4>
+                                <p class="list-group-item-text">...</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!----------------------
+                    |                    |
+                    |  THIS IS PAGE TWO  | 
+                    |         lol        |
+                    ---------------------->
+                    <div class="tab-pane" id="tasks">
+                        <div class="inner-tab-pane">
+
+
+                            <div class="list-group">
+                                <a href="#" class="list-group-item active">
+                                    <h4 class="list-group-item-heading">tasks group item heading</h4>
+                                    <p class="list-group-item-text">...</p>
+                                </a>
+
+                                <a href="#" class="list-group-item">
+                                    <h4 class="list-group-item-heading">List group item heading</h4>
+                                    <p class="list-group-item-text">...</p>
+                                </a>
+
+                                <a href="#" class="list-group-item">
+                                    <h4 class="list-group-item-heading">List group item heading</h4>
+                                    <p class="list-group-item-text">...</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!----------------------
+                        |                    |
+                        |  THIS IS PAGE THREE  | 
+                        |         lol        |
+                        ---------------------->
+                        <div class="tab-pane" id="money">
+                            <div class="inner-tab-pane">
+
+                                <div class="info">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <h2>avatar</h2>
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <h2>money</h2>
+                                            <h1 class="main-info money">$3402035</h1>
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <h2>credit score</h2>
+                                            <h1 class="main-info credit">240</h1>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container graph-container">
+
+                                    <div class="graph col-xs-12">
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary apply">Apply for loan</button>
+                                <ul class="loans buttons"> </ul>
+
+                            </div>
+                        </div>
+            </div>
+
+
+
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/vendor/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js"></script>
+            <script type="text/javascript" src="./game.js"></script>
+            <script type="text/javascript" src="./graph.js"></script>
+            <script type="text/javascript">
+
+$(document).ready(function (){
+    $('#tabs').tab();
+    $(".apply").click(function() {
+        var loan = getLoan();
+        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
     });
-</script>  
-  </body>
+});
+
+            </script>  
+    </body>
 </html>
 

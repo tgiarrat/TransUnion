@@ -16,23 +16,67 @@ h2 {
 }
 
 .header {
-   padding: none; !important;
-   margin: none; !important;
+   padding: none !important;
+   margin: none !important;
    background-color: green;
 }
 
-.tabs {
-   background-color:green;
+.tab {
+   margin-bottom:0px;
+   background-color:red;
+}
+.tab:hover{
+    background-color:red !important;
+}
+.tab-left {
+   margin-bottom:0px;
+   margin-left: 50px;
+}
+.tab-right{
+   margin-bottom:0px;
+   margin-right: 50px;
+}
+.info {
+    background-color:#C0392B;
+    border-radius: 7px;
+    box-shadow: inset 1px 1px 2px #000;
+    height: 150px;
+    margin: 10px;
+    color: white;
+}
+.graph {
+    width: 100%;
+    border-radius: 7px;
+
+}
+.active {
+    background-color: white;
 }
 
 .head_item_wrapper {
   text-align: center;
   vertical-align: middle;
-  border: black 0.25px solid;
 }
-
+.main-info {
+    font-size: 2em;
+    color: #2ECC71;
+    text-shadow: 1px 1px 1px #000;
+}
 .main {
    background-color: blue;
+}
+.tab-pane {
+    border-radius: 7px;
+    background-color:brown;
+}
+.inner-tab-pane {
+    background-color:white;
+    padding: 20px;
+    border-radius: 7px;
+}
+body{
+    padding:10px;
+    background-color: #7F8C8D;
 }
 
 .graph_image {
@@ -40,6 +84,43 @@ h2 {
   width:100%;
 }
 
+.loan{
+    color: #ECF0F1;
+    padding: 5px;
+    margin-top:2px;
+
+    background-color:#C0392B;
+    border-radius: 7px;
+    box-shadow: inset 1px 1px 2px #000;
+    margin: 10px;
+    color: white;
+}
+.loan button {
+    height: 100% !important;
+}
+.buttons{
+    list-style:none;
+    padding-left:0px;
+}
+.tab-pane {
+    text-align:center
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
 
 
 

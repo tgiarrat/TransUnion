@@ -3,11 +3,25 @@ var MINUITE = SECOND * 60;
 var HOUR = MINUITE * 60;
 var DAY = HOUR * 24;
 
+var startTime = new Date().getTime();
+
+var moneyHistory = [];
+var creditHistory = [];
+
 var money = 5000;
 var creditScore = 500;
 
-//getPossibleLoans();
+moneyHistory.push({time: 0, money: money});
+creditHistory.push({time: 0, credit: creditScore});
 
+function updateStats() {
+    $(".money").html(money);
+    $(".credit").html(creditScore);
+
+    var time = new Date().getTime() - startTime / 10000;
+    moneyHistory.push({time: time, money: money});
+    creditHistory.push({time: time, credit: creditScore});
+}
 
 function getLoan() {
     var loanNames = ["Car", "House", "Food", "School"];
@@ -44,52 +58,49 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.period = length / numPayments;
     this.dpr = dpr;
 
-    this.init = function (nextPaymentDate, domParent) {
-        this.nextPaymentDate = nextPaymentDate;
-        this.domParent = domParent;
-
-
-        this.draw.call(this);
-        this.domParent.append(this.dom);
-
-        setTimeout(function (me) {
-            me.endOfPeriod.call(me);
-        }, nextPaymentDate - (new Date()).getTime(), this);
-
-        updateStats();
-    };
-
     this.draw = function(){
         var d = new Date(this.nextPaymentDate);
         var month = d.getMonth()+1;
         var date = d.getDate()+"-"+month+"-"+d.getFullYear();
-        this.dom = $("<li><div class='loan'><div class='row'><div class='col-md-8'>" +
+        this.dom = $("<li><div class='loan'><div class='row'><div class='col-xs-8'>" +
                 "Loan " + this.name + " - Balance: " + this.balance +
                 "<br>Payment amount: " + this.payment + " - Due: " + date +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
-                "<br></div><div class='col-md-4'><button class='btn btn-primary'>Make Payment</button>" +
+                "<br></div><div class='col-xs-4'><button class='btn btn-inverse'>Make Payment</button>" +
                 "</div></div></div></li>");
+
+        this.button = this.dom.find('button');
+
+        this.button.click(this, function (me) {
+            me.data.makePayment.call(me.data);
+        });
 
     };
 
     this.destroy = function () {
         console.log("[LOAN] destroying loan " + this.name);
+        this.done = true;
     };
 
     this.makePayment = function() {
-        if (payment !== 0 && money >= payment) {
-            money -= payment;
-            balance -= payment;
-            payment = 0;
-        } else {
-            alert("already payed for this cycle");
+        if (this.payment !== 0) {
+            money -= this.payment;
+            updateStats();
+            this.balance -= this.payment;
+            this.payment = 0;
+            this.button.addClass('disabled');
+        }
+        if (this.numPayments <= 1) {
+            this.dom.remove();
+            this.destroy.call(this);
         }
     };
 
     this.endOfPeriod = function () {
         if (this.payment !== 0) {
-            this.balance += this.payment * this.dpr * this.period / 1000; // TODO: convert to days
-            // hurt their credit score
+            this.balance += this.payment * this.dpr * this.period / 1000;
+            creditScore -= 100; //TODO ACTUALLY EFFECT SCORE
+            updateStats();
         }
 
         if (this.numPayments <= 1) {
@@ -100,11 +111,26 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
         this.nextPaymentDate = this.nextPaymentDate + this.period;
 
+        if (this.dom)
+            this.dom.remove();
         this.draw.call(this);
+        this.button.removeClass('disabled');
+        this.domParent.prepend(this.dom);
+
+        setTimeout(function (me) {
+            if (!me.done)
+                me.endOfPeriod.call(me);
+        }, 1000, this);
+
+    };
+
+    this.init = function (nextPaymentDate, domParent) {
+        this.nextPaymentDate = nextPaymentDate;
+        this.domParent = domParent;
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
-        }, 1000, this);
+        }, nextPaymentDate - (new Date()).getTime(), this);
 
     };
 }
