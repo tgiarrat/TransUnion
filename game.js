@@ -2,6 +2,9 @@ var SECOND = 1000;
 var MINUITE = SECOND * 60;
 var HOUR = MINUITE * 60;
 var DAY = HOUR * 24;
+var WEEK = DAY * 7;
+var MONTH = DAY * 30;
+var YEAR = DAY * 365;
 
 var startTime = new Date().getTime();
 
@@ -11,9 +14,17 @@ var creditHistory = [];
 var money = 5000;
 var creditScore = 500;
 
+var ASSETS = $('.assets');
+var TASKS = $('.tasks');
+var LOANS = $('.loans');
 
 moneyHistory.push({time: 0, money: money});
 creditHistory.push({time: 0, credit: creditScore});
+
+
+
+
+
 
 function updateStats() {
     $(".money").html(money.toFixed(2));
@@ -164,7 +175,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     };
 
 
-    this.init = function (nextPaymentDate, domParent) {
+    this.init = function (nextPaymentDate, domParent = LOANS) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
@@ -181,7 +192,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 }
 
 
-function Task(time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
+function Task(name, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
+    this.name = name;
     this.skillReq = skillReq;
     this.oneTime = oneTime;
 
@@ -193,7 +205,7 @@ function Task(time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 
     this.running = false;
 }
 
-var initTask = function (nextPaymentDate, domParent) {
+var initTask = function (nextPaymentDate, domParent = TASKS) {
     this.nextPaymentDate = nextPaymentDate;
     this.domParent = domParent;
 };
@@ -266,15 +278,18 @@ var drawTask = function(){
 
 var inputDeductor = 0;
 
-function Asset(name, tasks, value, buffs) {
+function Asset(name, image, tasks, baseValue, minimumCredit, buffs) {
     this.name = name;
+    this.image = image;
     this.tasks = tasks;
     this.value = value;
+    this.requiredCredit = requiredCredit;
     this.inputDeductor = inputDeductor;
 
+    this.price = baseValue + (baseValue * (0.1 - 0.1*(creditScore/850)));
 }
 
-function initAsset(parentDom) {
+function initAsset(parentDom = ASSETS) {
     this.parentDom = parentDom;
 
     for (var task in this.tasks) {
@@ -309,3 +324,39 @@ var drawAsset = function(){
         me.data.destroyAsset.call(me.data);
     });
 };
+
+var ALL_TASKS = {
+    bnbApartment: new Task("Air BNB Apartment", WEEK, 1000, 0),
+    bnbHouse: new Task("Give Uber Rides", WEEK), 
+    bnbMansion: "adf"
+
+};
+
+// POPULATE ITEMS
+var ALL_ITEMS = [
+    new Asset("Apartment", "./apartment.jpg", [], 30000, {}),
+    new Asset("House", "./house.jpg", [], 150000, {}),
+    new Asset("Mansion", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Bike", "./mansion.jpg", [], 150000, {}),
+    new Asset("Scooter", "./mansion.jpg", [], 150000, {}),
+    new Asset("Car", "./mansion.jpg", [], 150000, {}),
+    new Asset("Truck", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
+    new Asset("747", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Cat", "./mansion.jpg", [], 150000, {}),
+    new Asset("Dog", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Computer", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Wedding Ring", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
+    new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
+
+    new Asset("Mic", "./mansion.jpg", [], 150000, {}),
+];
+
+
