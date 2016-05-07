@@ -52,7 +52,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
-        this.dom = $("<li><div>HITHERE</div></li>");
+        this.dom = $("<li><div>name:"+this.name+" amount: "+ this.amount+ "</div></li>");
 
         this.domParent.append(this.dom);
         
@@ -89,6 +89,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         }
 
         this.nextPaymentDate = this.nextPaymentDate + this.period;
+
+        this.dom.html(this.payment);
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
@@ -166,30 +168,3 @@ function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, 
     };
 }
 
-function creditUpdate(type, action, creditDelta = 0) {
-    this.type = type;
-    this.action = action;
-
-    data[key] = value;
-    
-    this.go = function() {
-        if (creditDelta === 0){
-            $.ajax({
-                dataType: "json",
-                contentType: "application/json",
-                url: "http://ec2-52-53-177-180.us-west-1.compute.amazonaws.com/score-simulator/scoresim/simulateScore",
-                type: "POST",
-                data: {
-                    "score": score,
-                    "event": {
-                        this.type: this.action
-                    }
-                },
-                success: function(res) { score = res.score; },
-                error: function(res) { console.warn(res); }
-            });
-        }
-        else
-            credit += creditDelta;
-    }
-}
