@@ -336,9 +336,10 @@ var buyAsset = function(parentBuyDom) {
     }
 };
 
-
+var lastDom;
 var drawAsset = function(){
     var tasksString = "";
+	
     for (var task in this.tasks) {
         tasksString += task.name + " ";
     }
@@ -367,6 +368,9 @@ var drawAsset = function(){
         });
     }
     this.dom.click(this, function (me) {
+		if (lastDom) lastDom.css("backgroundColor", "");
+		me.data.dom.find('.asset').css("backgroundColor", "#c2c2c2");
+		lastDom = me.data.dom.find('.asset');
         me.data.infoDom.empty();
         me.data.infoDom.append(me.data.dataDom);
     });
