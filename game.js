@@ -346,9 +346,12 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
+
+	basic: new Task("Do chores", DAY, 20, 0),
+
     bnbApartment: new Task("Air BNB Apartment", WEEK, 1000, 0),
-    bnbHouse: new Task("Air BNB Apartment", WEEK, 5000, 0), 
-    bnbMansion: new Task("Air BNB Apartment", WEEK, 20000, 0), 
+    bnbHouse: new Task("Air BNB House", WEEK, 5000, 0), 
+    bnbMansion: new Task("Air BNB Mansion", WEEK, 20000, 0), 
 
     uber: new Task("Uber", DAY, 200, 0), 
 
