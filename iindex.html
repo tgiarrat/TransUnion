@@ -12,22 +12,23 @@
 
     </head>
     <body>
-	<div class"tophead">
-        <div class="info tophead">
-            <div class="row">
-                <div class="col-xs-4">
-                    <h2>avatar</h2>
-                </div>
+        <div class"tophead">
+            <div class="info tophead">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h2>avatar</h2>
+                    </div>
 
-                <div class="col-xs-4">
-                    <h2>money</h2>
-                    <h1 class="main-info money">$3402035</h1>
-                </div>
+                    <div class="col-xs-4">
+                        <h2>money</h2>
+                        <h1 class="main-info money">$3402035</h1>
+                    </div>
 
-                <div class="col-xs-4">
-                    <h2 class ="nopad" ><img style="height: 40px;" src="images/logoBlue.svg"/><br>Credit Score</h2>
+                    <div class="col-xs-4">
+                        <h2 class ="nopad" ><img style="height: 40px;" src="images/logoBlue.svg"/><br>Credit Score</h2>
 
-                    <h1 class="main-info credit">240</h1>
+                        <h1 class="main-info credit">240</h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,7 +50,7 @@
             </div>
             </div>
         -->
-		
+
         <div class="content">
             <ul id="tabs" class="nav nav-tabs nav-justified navbar-fixed-top " data-tabs="tabs">
                 <li class="tab tab-left active"><a href="#assets" data-toggle="tab"><img src="images/home.png"/><br>Assets</a></li>
@@ -57,87 +58,61 @@
                 <li class="tab tab-right"><a href="#money" data-toggle="tab"><img src="images/loan.png"/><br>Money</a></li>
             </ul>
 
-		
+
 
             <!--   MAIN CONTENT   -->
 
             <div id="my-tab-content" class="tab-content">
                 <div class="tab-pane active" id="assets">
                     <div class="inner-tab-pane">
+                        <ul class = "col-xs-4 owned assets">
+                        </ul>
+                        <ul class= "col-xs-4 store assets">
+                        </ul>
+                        <div class= "col-xs-4 info">
+                        </div>
 
-                        <div class="list-group">
-                            <a href="#" class="list-group-item active">
-                                <h4 class="list-group-item-heading">assets group item heading</h4>
-                                <p class="list-group-item-text">...</p>
-                            </a>
+                    </div>
+                </div>
 
-                            <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">List group item heading</h4>
-                                <p class="list-group-item-text">...</p>
-                            </a>
+                <div class="tab-pane" id="tasks">
+                    <div class="inner-tab-pane">
 
-                            <a href="#" class="list-group-item">
-                                <h4 class="list-group-item-heading">List group item heading</h4>
-                                <p class="list-group-item-text">...</p>
-                            </a>
+                        <div id="my-tab-content" class="tab-content">
+                            <div class="tab-pane active" id="assets">
+                                <div class="inner-tab-pane">
+                                    <ul class = "col-xs-4 owned assets">
+                                    </ul>
+                                    <ul class= "col-xs-4 store assets">
+                                    </ul>
+                                    <div class= "col-xs-4 info">
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!----------------------
-                    |                    |
-                    |  THIS IS PAGE TWO  | 
-                    |         lol        |
-                    ---------------------->
-                    <div class="tab-pane" id="tasks">
-                        <div class="inner-tab-pane">
 
-                <div id="my-tab-content" class="tab-content">
-                    <div class="tab-pane active" id="assets">
-                        <div class="inner-tab-pane">
-                            <div class = "row">
-                                <ul class = "col-xs-4 owned assets">
-                                </ul>
-                                <ul class= "col-xs-4 store assets">
-                                </ul>
-                                <div class= "col-xs-4 info">
-                                </div>
+                <div class="tab-pane" id="money">
+                    <div class="inner-tab-pane">
 
-                                <a href="#" class="list-group-item">
-                                    <h4 class="list-group-item-heading">List group item heading</h4>
-                                    <p class="list-group-item-text">...</p>
-                                </a>
 
-                                <a href="#" class="list-group-item">
-                                    <h4 class="list-group-item-heading">List group item heading</h4>
-                                    <p class="list-group-item-text">...</p>
-                                </a>
+                        <div class="container graph-container">
+                            <div class="graph col-xs-12">
                             </div>
                         </div>
+
+                        <hr>
+                        <button class="btn btn-primary apply-small">Apply for school loan</button>
+                        <button class="btn btn-primary apply-medium">Apply for car loan</button>
+                        <button class="btn btn-primary apply-large">Apply for house loan</button>
+                        <button class="btn btn-primary apply-x-large">Apply for investment loan</button>
+                        <div class="loans"> </div>
+
+
                     </div>
-                    <!----------------------
-                        |                    |
-                        |  THIS IS PAGE THREE  | 
-                        |         lol        |
-                        ---------------------->
-                        <div class="tab-pane" id="money">
-                            <div class="inner-tab-pane">
-
-
-                                <div class="container graph-container">
-                                    <div class="graph col-xs-12">
-                                    </div>
-                                </div>
-
-                                <hr>
-                                <button class="btn btn-primary apply-small">Apply for school loan</button>
-                                <button class="btn btn-primary apply-medium">Apply for car loan</button>
-                                <button class="btn btn-primary apply-large">Apply for house loan</button>
-                                <button class="btn btn-primary apply-x-large">Apply for investment loan</button>
-                                <div class="loans"> </div>
-
-
-                            </div>
-                        </div>
+                </div>
             </div>
 
 
