@@ -11,6 +11,14 @@ h2 {
   font-size:18px; 
 }
 
+.tophead {
+	position: fixed !important;
+	overflow: hidden;
+}
+
+.navbar-fixed-top {
+  top: 150px;
+}
 
 .tab {
    margin-bottom:0px;
@@ -30,15 +38,19 @@ h2 {
     border-radius: 7px;
     box-shadow: inset 1px 1px 2px #000;
     height: 150px;
-    margin: 10px;
+    margin: 0px;
+	width: 100%;
     color: white;
 }
 
+<<<<<<< HEAD
 body {
     position: absolute;
     padding:10px;
     background-color: #ECF0F1;
 }
+=======
+>>>>>>> be7902f4c8725c28170d22fe3d83fd1f2d7dd024
 
 .graph {
     width: 100%;
@@ -56,32 +68,39 @@ body {
 .inner-tab-pane {
     background-color:white;
     padding: 20px;
+	padding-top: 200px;
     border-radius: 7px;
 }
+<<<<<<< HEAD
+=======
+body{
+    padding:10px;
+
+}
+>>>>>>> be7902f4c8725c28170d22fe3d83fd1f2d7dd024
 
 .graph_image {
   padding: 15px 0 10px 0;
   width:100%;
 }
 
+
+
 .loan{
-    color: #ECF0F1;
+	float: left;
     padding: 5px;
     margin-top:2px;
-
-    background-color:#C0392B;
-    border-radius: 7px;
-    box-shadow: inset 1px 1px 2px #000;
+	margin-left: 10px;
+    background-color: white;
+	border-color: black;
+	border-width: 1px;
+    box-shadow: 1px 1px 2px #000;
     margin: 10px;
-    color: white;
+    color: black;
+	width: 25%;
+	min-width: 200px;
 }
-.loan button {
-    height: 100% !important;
-}
-.buttons{
-    list-style:none;
-    padding-left:0px;
-}
+
 .tab-pane {
     text-align:center
 }
