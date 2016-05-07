@@ -105,14 +105,18 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
         var timeLeft = this.period;
         var countdown = this.dom.find('.time-left');
+		var seconds = Math.floor((timeLeft / SECOND) % 60);
+        var minutes = Math.floor((timeLeft / MINUITE) % 60);
+        var hours = Math.floor((timeLeft / HOUR) % 24);
 
+        countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
         var interval = setInterval(function () {
 			timeLeft -= SECOND;
 			if (timeLeft <= 0)
 				timeLeft = 0;
-            var seconds = Math.floor((timeLeft / SECOND) % 60);
-            var minutes = Math.floor((timeLeft / MINUITE) % 60);
-            var hours = Math.floor((timeLeft / HOUR) % 24);
+            seconds = Math.floor((timeLeft / SECOND) % 60);
+            minutes = Math.floor((timeLeft / MINUITE) % 60);
+            hours = Math.floor((timeLeft / HOUR) % 24);
 
             countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
             
