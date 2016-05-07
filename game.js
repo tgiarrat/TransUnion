@@ -51,8 +51,8 @@ function moneyString(num){
     return "$" + num.toFixed(2);
 }
 function moneyHtml(num){
-    return num.toFixed(2);
-    //return "<p class='money'>$" + num.toFixed(2) + "</p>";
+    //return num.toFixed(2);
+    return "<p class='money'>$" + num.toFixed(2) + "</p>";
 }
 
 function getLoan(scale) {
