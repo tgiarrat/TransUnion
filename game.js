@@ -11,8 +11,8 @@ var startTime = new Date().getTime();
 var moneyHistory = [];
 var creditHistory = [];
 
-var money = 5000;
-var creditScore = 500;
+var money = 0;
+var creditScore = 0;
 
 var ASSETS = $('.assets');
 var TASKS = $('.tasks');
@@ -21,10 +21,12 @@ var LOANS = $('.loans');
 moneyHistory.push({time: 0, money: money});
 creditHistory.push({time: 0, credit: creditScore});
 
+addMoney(5000);
+addCredit(500);
 
 function updateStats() {
-    $(".money").html(money.toFixed(2));
-    $(".credit").html(creditScore.toFixed(2));
+    $("#money").html(money.toFixed(2));
+    $("#credit").html(creditScore.toFixed(2));
 
     var time = new Date().getTime() - startTime / 10000;
     moneyHistory.push({time: time, money: money});
@@ -34,15 +36,15 @@ function updateStats() {
 
 function addMoney(delta) {
     money += delta;
-    $(".money").html(money.toFixed(2));
+    $("#money").html(money.toFixed(2));
     var time = new Date().getTime() - startTime / 10000;
     moneyHistory.push({time: time, money: money});
 }
 function addCredit(delta) {
-    credit += delta;
-    $(".credit").html(credit.toFixed(2));
+    creditScore += delta;
+    $("#credit").html(creditScore.toFixed(2));
     var time = new Date().getTime() - startTime / 10000;
-    creditHistory.push({time: time, credit: credit});
+    creditHistory.push({time: time, creditScore: creditScore});
 }
 
 function moneyString(num){
@@ -285,25 +287,45 @@ var Asset = function (name, image, tasks, baseValue, minimumCredit, buffs) {
     this.price = baseValue + (baseValue * (0.1 - 0.1*(creditScore/850)));
 };
 
-function initAsset(storeAsset, parentDom, infoDom) {
+var initAsset = function(storeAsset, parentDom, infoDom) {
+    console.log("creating a new asset");
+    console.log(this);
     this.parentDom = parentDom;
     this.infoDom = infoDom;
+    this.storeAsset = storeAsset;
 
-    if (!storeAsset) {
+    if (!this.storeAsset) {
         for (var task in this.tasks) {
             initTask.call(task);
         }
     }
     drawAsset.call(this);
+};
 
-}
+var sellAsset = function(parentSellDom) {
+    if (!this.storeAsset) {
+        for (var task in this.tasks) {
+            destroyTask.call(task);
+        }
+        addMoney(this.baseValue);
 
-function destroyAsset() {
-    for (var task in this.tasks) {
-        destroyTask.call(task);
+        this.dom.remove();
+        initAsset.call(this, true, parentSellDom, this.infoDom);
     }
-    addMoney(this.value);
-}
+};
+var buyAsset = function(parentBuyDom) {
+    if (this.price > money) return alert("not enough money " + this.price + " " + money);
+    if (creditScore < this.minimumCredit) return alert("not enough credit");
+    if (this.storeAsset) {
+        addMoney(-this.price);
+        
+        // TODO INCREMENT THE CREDIT FUCKING SCORE
+
+        this.dom.remove();
+
+        initAsset.call(this, false, parentBuyDom, this.infoDom);
+    }
+};
 
 
 var drawAsset = function(){
@@ -314,26 +336,30 @@ var drawAsset = function(){
     console.log("tasks String" + this.price);
 
     this.dom = $("<li><div class='asset'><div class='row'>" +
-            "<h3>" + this.name + "</h3><br>" +
+            "<h3>" + this.name + "</h3>" +
             "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
             "<br>Liquidation Price: <h4 class='time-left'></h4>"+
-            "<button class='btn btn-inverse'>Liquidate " + moneyHtml(this.price)+ "</button>" +
+            "<button class='btn btn-inverse'>" + (this.storeAsset ?"Purchase":"Liquidate") + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
     this.dataDom = $("<div class='asset'><div class='row'>" +
             "<h3>" + this.name + "</h3><br>" +
             "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
             "<br>Liquidation Price: <h4 class='time-left'></h4>"+
-            "<button class='btn btn-inverse'>Liquidate " + moneyHtml(this.price)+ "</button>" +
             "</div></div>");
 
     this.button = this.dom.find('button');
 
-    this.button.click(this, function (me) {
-        me.data.destroyAsset.call(me.data);
-    });
+    if (this.storeAsset) {
+        this.button.click(this, function (me) {
+            buyAsset.call(me.data, $('.owned-assets'));
+        });
+    } else {
+        this.button.click(this, function (me) {
+            sellAsset.call(me.data, $('.store-assets'));
+        });
+    }
     this.dom.click(this, function (me) {
-        console.log("CLICKED");
         me.data.infoDom.empty();
         me.data.infoDom.append(me.data.dataDom);
     });
@@ -360,8 +386,8 @@ var ALL_ITEMS = [
     new Asset("House", "./house.jpg", [ALL_TASKS.bnbHouse], 150000, {}),
     new Asset("Mansion", "./mansion.jpg", [ALL_TASKS.bnbMansion], 150000, {}),
 
-    new Asset("Bike", "./mansion.jpg", [], 150000, {}),
-    new Asset("Scooter", "./mansion.jpg", [], 150000, {}),
+    new Asset("Bike", "./mansion.jpg", [], 60, {}),
+    new Asset("Scooter", "./mansion.jpg", [], 30, {}),
     new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
     new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
 
@@ -383,7 +409,7 @@ var ALL_ITEMS = [
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
     var asset = ALL_ITEMS[i];
-    initAsset.call(asset, 1, $('.store'), $('.asset-info-filler'));
+    initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
 }
 
 
