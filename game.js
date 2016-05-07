@@ -9,25 +9,20 @@ var creditScore = 500;
 //getPossibleLoans();
 
 
-function getPossibleLoans() {
+function getLoan() {
     var loanNames = ["Car", "House", "Food", "School"];
-    var loans = [];
 
-    var numLoans = Math.floor((Math.random() * 5) + 2); // 2 - 7 loans
-    for (var i = 0; i < numLoans; i++) { 
-        var name = loanNames[Math.floor(Math.random() * loanNames.length)];
-        var dpr = 0.4 * ((1000-creditScore) / 1000) * Math.random();
-        var amount = Math.ceil(Math.pow(10, Math.random() * 6 + 2) * Math.random());
+    var name = loanNames[Math.floor(Math.random() * loanNames.length)];
+    var dpr = 0.4 * ((1000-creditScore) / 1000) * Math.random();
+    var amount = Math.ceil(Math.pow(10, Math.random() * 6 + 2) * Math.random());
 
-        var length = Math.floor(Math.random() * (DAY * 5) + DAY);
-        var numPayments = Math.floor(Math.random() * 20 + 5);
+    var length = Math.floor(Math.random() * (DAY * 5) + DAY);
+    var numPayments = Math.floor(Math.random() * 20 + 5);
 
-        var loan = new Loan(name, amount, length, dpr, numPayments);
-        console.log(loan);
-        loans.push(loan);
-    }
+    var loan = new Loan(name, amount, length, dpr, numPayments);
+    console.log(loan);
 
-    return loans;
+    return loan;
 }
 
 function Occupation() {
@@ -37,6 +32,7 @@ function Occupation() {
 
 function Loan(name, amount, length, dpr, numPayments, payment) {
     console.log("[LOAN] creating loan");
+    money += amount;
 
     this.name = name; // name of loan eg: "car loan"
     this.amount = amount;
@@ -52,14 +48,28 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
-        this.dom = $("<li><div>name:"+this.name+" amount: "+ this.amount+ "</div></li>");
 
+        this.draw.call(this);
         this.domParent.append(this.dom);
-        
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
         }, nextPaymentDate - (new Date()).getTime(), this);
+
+        updateStats();
+    };
+
+    this.draw = function(){
+        var d = new Date(this.nextPaymentDate);
+        var month = d.getMonth()+1;
+        var date = d.getDate()+"-"+month+"-"+d.getFullYear();
+        this.dom = $("<li><div class='loan'><div class='row'><div class='col-md-8'>" +
+                "Loan " + this.name + " - Balance: " + this.balance +
+                "<br>Payment amount: " + this.payment + " - Due: " + date +
+                "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
+                "<br></div><div class='col-md-4'><button class='btn btn-primary'>Make Payment</button>" +
+                "</div></div></div></li>");
+
     };
 
     this.destroy = function () {
@@ -90,7 +100,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
         this.nextPaymentDate = this.nextPaymentDate + this.period;
 
-        this.dom.html(this.payment);
+        this.draw.call(this);
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
@@ -99,41 +109,6 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     };
 }
 
-function Task(name, money, time, requirements, domParent) {
-    this.name = name;
-    this.money = money;
-    this.time = time;
-    this.requirements = requirements;
-
-    this.active = false;
-
-    this.domParent = domParent;
-    this.dom = $('ul');
-
-    this.domParent.append(this.dom);
-
-    this.startTask = function() {
-        if (!active) {
-            // grey out the element
-            active = true;
-
-            SetTimeout(this.time, this.endTask);
-        }
-    };
-
-    this.endTask = function () {
-        console.log("\t[TASK] Just finished task: " + this.name);
-        this.active = false;
-        // ungray element
-        money += this.money;
-        creditScore += this.deltaCredit();
-    };
-
-    this.deltaCredit = function () {
-        // ajax call
-        // or something else
-    };
-}
 
 function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
     this.parentDom = parentDom;
@@ -143,11 +118,25 @@ function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, 
     this.rewardMoney = rewardMoney;
     this.rewardCS = rewardCS;
     this.running = false;
-    
+
+    this.init = function (nextPaymentDate, domParent) {
+        this.nextPaymentDate = nextPaymentDate;
+        this.domParent = domParent;
+
+        this.dom = $("<li><div>name:"+this.name+" amount: "+ this.amount+ "</div></li>");
+
+        this.domParent.append(this.dom);
+
+
+        setTimeout(function (me) {
+            me.endOfPeriod.call(me);
+        }, nextPaymentDate - (new Date()).getTime(), this);
+    };
+
     this.init = function() {
         //show self
     };
-    
+
     this.start = function() {
         if (!this.running) {
             money -= this.cost;
@@ -163,7 +152,7 @@ function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, 
         {
             //hide myself
         }
-        
+
         this.running = false;
     };
 }

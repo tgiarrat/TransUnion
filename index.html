@@ -10,6 +10,15 @@
 
         <style> 
 
+.loan{
+    border: solid black 1px;
+    border-radius: 5px;
+    background-color: #BDC3C7;
+    padding: 5px;
+}
+.buttons{
+    list-style:none;
+}
 
         </style>
     </head>
@@ -19,13 +28,17 @@
 
         <ul class="buttons"> </ul>
 
+        <button class="apply">Apply for loan</button>
+
     </body>
 
     <script>
 
 $(document).ready(function (){
-    var testLoan = new Loan("test", 10, 10000, 0.5, 10);
-    testLoan.init.call(testLoan, (new Date()).getTime() + 1000, $(".buttons"));
+    $(".apply").click(function() {
+        var loan = getLoan();
+        loan.init.call(loan, (new Date()).getTime() + 1000, $(".buttons"));
+    });
 });
     
     </script>
