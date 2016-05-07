@@ -61,7 +61,7 @@ function getLoan(scale) {
     var dpr = 0.4 * ((1000-creditScore) / 1000) * Math.random();
     var amount = Math.ceil(Math.random() * scale + scale);
 
-    var length = Math.floor(Math.random() * (DAY * 5) + DAY);
+    var length = Math.floor(Math.random() * (MINUITE * 5) + SECOND * 5);
     var numPayments = Math.floor(Math.random() * 20 + 5);
 
     var loan = new Loan(name, amount, length, dpr, numPayments);
@@ -106,14 +106,21 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         var countdown = this.dom.find('.time-left');
 
         var interval = setInterval(function () {
+			timeLeft -= SECOND;
+			if (timeLeft <= 0)
+				timeLeft = 0;
             var seconds = Math.floor((timeLeft / SECOND) % 60);
             var minutes = Math.floor((timeLeft / MINUITE) % 60);
             var hours = Math.floor((timeLeft / HOUR) % 24);
 
-            countdown.html(hours + ":" + minutes + ":" + seconds);
-            timeLeft -= 10;
-            timeLeft <= 0 && clearInterval(interval);
-        }, 11);
+            countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+            
+            if (timeLeft <= 0) {
+				
+				clearInterval(interval);
+				
+			}
+        }, SECOND);
 
 
         this.button.click(this, function (me) {
@@ -146,8 +153,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
     this.endOfPeriod = function () {
         if (this.payment !== 0) {
-            this.balance += this.payment * this.dpr * this.period / 1000;
-            creditScore -= 100; //TODO ACTUALLY EFFECT SCORE
+            this.balance += this.payment * this.dpr * this.period / DAY;
+            addCredit( -100); //TODO ACTUALLY EFFECT SCORE
             updateStats();
         }
 
@@ -156,7 +163,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         } else {
             this.payment = this.balance/ --this.numPayments;
         }
-
+		console.log("here");
         this.nextPaymentDate = this.nextPaymentDate + this.period;
 
         if (this.dom)
@@ -241,7 +248,7 @@ var startTask = function() {
             this.countdown.html(hours + ":" + minutes + ":" + seconds);
             timeLeft -= 10;
             timeLeft <= 0 && clearInterval(interval);
-        }, 11);
+        }, 1000);
 
     } else {
         this.disableButton.call(this);
@@ -412,4 +419,5 @@ for (var i = 0; i < ALL_ITEMS.length; i ++) {
     initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
 }
 
+updateStats();
 
