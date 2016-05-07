@@ -1,0 +1,50 @@
+.nopad {
+   padding: 0px !important;
+   margin: 0px !important;
+}
+
+h1 {
+  font-size:24px; 
+}
+
+h2 {
+  font-size:18px; 
+}
+
+.top_bar {
+  background-color: #EAEAEA;
+}
+
+.header {
+   padding: none; !important;
+   margin: none; !important;
+   background-color: green;
+}
+
+.tabs {
+   background-color:green;
+}
+
+.head_item_wrapper {
+  text-align: center;
+  vertical-align: middle;
+  border: black 0.25px solid;
+}
+
+.main {
+   background-color: blue;
+}
+
+.graph_image {
+  padding: 15px 0 10px 0;
+  width:100%;
+}
+
+
+
+
+
+
+
+
+
