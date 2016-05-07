@@ -278,23 +278,27 @@ var drawTask = function(){
 
 var inputDeductor = 0;
 
-function Asset(name, image, tasks, baseValue, minimumCredit, buffs) {
+var Asset = function (name, image, tasks, baseValue, minimumCredit, buffs) {
     this.name = name;
     this.image = image;
     this.tasks = tasks;
-    this.value = value;
-    this.requiredCredit = requiredCredit;
+    this.baseValue = baseValue;
+    this.minimumCredit = minimumCredit;
     this.inputDeductor = inputDeductor;
 
     this.price = baseValue + (baseValue * (0.1 - 0.1*(creditScore/850)));
-}
+};
 
-function initAsset(parentDom = ASSETS) {
+function initAsset(storeAsset, parentDom) {
     this.parentDom = parentDom;
 
-    for (var task in this.tasks) {
-        initTask.call(task);
+    if (!storeAsset) {
+        for (var task in this.tasks) {
+            initTask.call(task);
+        }
     }
+    drawAsset.call(this);
+
 }
 
 function destroyAsset() {
@@ -307,15 +311,16 @@ function destroyAsset() {
 
 var drawAsset = function(){
     var tasksString = "";
-    for (var task in tasks) {
-        taskString += task.name + " ";
+    for (var task in this.tasks) {
+        tasksString += task.name + " ";
     }
+    console.log("tasks String" + this.price);
 
     this.dom = $("<li><div class='asset'><div class='row'>" +
             "<h3>" + this.name + "</h3><br>" +
-            "<br>Created Tasks: <p class='tasks'>" + taskString + "</b><br>" +
+            "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
             "<br>Liquidation Price: <h4 class='time-left'></h4>"+
-            "<button class='btn btn-inverse'>Liquidate " +moneyHtml(this.value)+ "</button>" +
+            "<button class='btn btn-inverse'>Liquidate " + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
     this.button = this.dom.find('button');
@@ -323,25 +328,29 @@ var drawAsset = function(){
     this.button.click(this, function (me) {
         me.data.destroyAsset.call(me.data);
     });
+    this.parentDom.append(this.dom);
 };
 
 var ALL_TASKS = {
     bnbApartment: new Task("Air BNB Apartment", WEEK, 1000, 0),
-    bnbHouse: new Task("Give Uber Rides", WEEK), 
-    bnbMansion: "adf"
+    bnbHouse: new Task("Air BNB Apartment", WEEK, 5000, 0), 
+    bnbMansion: new Task("Air BNB Apartment", WEEK, 20000, 0), 
 
+    uber: new Task("Uber", DAY, 200, 0), 
+
+    getMarried: new Task("Get Married", YEAR, 0, 0, 1000),  //TODO adjust credit
 };
 
 // POPULATE ITEMS
 var ALL_ITEMS = [
-    new Asset("Apartment", "./apartment.jpg", [], 30000, {}),
-    new Asset("House", "./house.jpg", [], 150000, {}),
-    new Asset("Mansion", "./mansion.jpg", [], 150000, {}),
+    new Asset("Apartment", "./apartment.jpg", [ALL_TASKS.bnbApartment], 30000, {}),
+    new Asset("House", "./house.jpg", [ALL_TASKS.bnbHouse], 150000, {}),
+    new Asset("Mansion", "./mansion.jpg", [ALL_TASKS.bnbMansion], 150000, {}),
 
     new Asset("Bike", "./mansion.jpg", [], 150000, {}),
     new Asset("Scooter", "./mansion.jpg", [], 150000, {}),
-    new Asset("Car", "./mansion.jpg", [], 150000, {}),
-    new Asset("Truck", "./mansion.jpg", [], 150000, {}),
+    new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
+    new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
 
     new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
     new Asset("747", "./mansion.jpg", [], 150000, {}),
@@ -351,12 +360,17 @@ var ALL_ITEMS = [
 
     new Asset("Computer", "./mansion.jpg", [], 150000, {}),
 
-    new Asset("Wedding Ring", "./mansion.jpg", [], 150000, {}),
+    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried], 150000, {}),
 
     new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
     new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
 
     new Asset("Mic", "./mansion.jpg", [], 150000, {}),
-];
+    ];
+
+for (var i = 0; i < ALL_ITEMS.length; i ++) {
+    var asset = ALL_ITEMS[i];
+    initAsset.call(asset, 1, $('.store'));
+}
 
 

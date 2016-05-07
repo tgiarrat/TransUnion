@@ -43,8 +43,6 @@ h2 {
     color: white;
 }
 
-
-
 .graph {
     width: 100%;
     border-radius: 7px;
@@ -113,7 +111,14 @@ body{
   stroke-width: 1.5px;
 }
 
-
+.assets {
+    list-style:none;
+    padding-left:0px; none;
+}
+.assets li {
+    border: 1px solid black;
+    background-color: #95A5A6;
+}
 
 
 
