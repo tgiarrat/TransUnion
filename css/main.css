@@ -11,13 +11,17 @@ h2 {
   font-size:18px; 
 }
 
+a img{
+	height: 30px;
+}
+
 .tophead {
 	position: fixed !important;
 	overflow: hidden;
 }
 
 .navbar-fixed-top {
-  top: 150px;
+  top: 130px;
 }
 
 .tab {
@@ -34,10 +38,10 @@ h2 {
 }
 .info {
     text-align: center;
-    background-color:#BDC3C7;
+    background-color:#a9d161;
     border-radius: 7px;
-    box-shadow: inset 1px 1px 2px #000;
-    height: 150px;
+    box-shadow: inset 0px 1px 2px #000;
+    height: 130px;
     margin: 0px;
 	width: 100%;
     color: white;
@@ -65,10 +69,7 @@ h2 {
     border-radius: 7px;
 }
 
-body{
-    padding:10px;
 
-}
 
 
 .graph_image {
