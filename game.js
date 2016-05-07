@@ -7,8 +7,6 @@ var money = 5000;
 var creditScore = 500;
 
 //getPossibleLoans();
-var testLoan = new Loan("test", 10, 10000, 0.5, 10);
-testLoan.init.call(testLoan, (new Date()).getTime() + 1000, $(".buttons"));
 
 
 function getPossibleLoans() {
@@ -54,7 +52,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
-        this.dom = $("<li><div>HITHERE</div></li>");
+        this.dom = $("<li><div>name:"+this.name+" amount: "+ this.amount+ "</div></li>");
 
         this.domParent.append(this.dom);
         
@@ -91,6 +89,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         }
 
         this.nextPaymentDate = this.nextPaymentDate + this.period;
+
+        this.dom.html(this.payment);
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
@@ -135,7 +135,36 @@ function Task(name, money, time, requirements, domParent) {
     };
 }
 
+function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
+    this.parentDom = parentDom;
+    this.skillReq = skillReq;
+    this.oneTime = oneTime;
+    this.time = time;
+    this.rewardMoney = rewardMoney;
+    this.rewardCS = rewardCS;
+    this.running = false;
+    
+    this.init = function() {
+        //show self
+    };
+    
+    this.start = function() {
+        if (!this.running) {
+            money -= this.cost;
+            this.running = true;
+            setTimeout(this.time, this.end);
+        }
+    };
 
-
-
+    this.end = function(){
+        money += rewardMoney();
+        rewardCS.go();
+        if (oneTime)
+        {
+            //hide myself
+        }
+        
+        this.running = false;
+    };
+}
 
