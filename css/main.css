@@ -140,6 +140,15 @@ a img{
     border: 1px solid black;
     border-radius: 3px;
     background-color: #95A5A6;
+    padding: 5px;
+}
+.asset h3{
+    float:left;
+    padding-left: 10px;
+}
+.asset button{
+    float:right;
+    padding-right: 10px;
 }
 
 div.store, div.owned {

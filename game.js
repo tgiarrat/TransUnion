@@ -51,7 +51,8 @@ function moneyString(num){
     return "$" + num.toFixed(2);
 }
 function moneyHtml(num){
-    return "<p class='money'>$" + num.toFixed(2) + "</p>";
+    return num.toFixed(2);
+    //return "<p class='money'>$" + num.toFixed(2) + "</p>";
 }
 
 function getLoan(scale) {
@@ -344,8 +345,6 @@ var drawAsset = function(){
 
     this.dom = $("<li><div class='asset'><div class='row'>" +
             "<h3>" + this.name + "</h3>" +
-            "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
-            "<br>Liquidation Price: <h4 class='time-left'></h4>"+
             "<button class='btn btn-inverse'>" + (this.storeAsset ?"Purchase":"Liquidate") + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
