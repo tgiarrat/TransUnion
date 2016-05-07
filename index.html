@@ -23,8 +23,9 @@
 
     <script>
 
-$(document).ready(function () {
-    console.log(Loan);
+$(document).ready(function (){
+    var testLoan = new Loan("test", 10, 10000, 0.5, 10);
+    testLoan.init.call(testLoan, (new Date()).getTime() + 1000, $(".buttons"));
 });
     
     </script>
