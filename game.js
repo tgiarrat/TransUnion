@@ -209,8 +209,7 @@ function Task(name, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skill
     this.running = false;
 }
 
-var initTask = function (nextPaymentDate, domParent) {
-    this.nextPaymentDate = nextPaymentDate;
+var initTask = function (domParent) {
     this.domParent = domParent;
 
     drawTask.call(this);
@@ -269,7 +268,7 @@ var drawTask = function(){
     this.countdown = this.dom.find('.time-left');
 
     this.button.click(this, function (me) {
-        me.data.startTask.call(me.data);
+        startTask.call(me.data);
     });
 
 
@@ -310,7 +309,7 @@ var initAsset = function(storeAsset, parentDom, infoDom) {
             var task = this.tasks[i];
             console.log("creating a new task");
             console.log(task);
-            initTask.call(task, $('.tasks'));
+            initTask.call(task, $('.task-table'));
         }
     }
     drawAsset.call(this);
