@@ -25,7 +25,7 @@ addMoney(5000);
 addCredit(500);
 
 function updateStats() {
-    $("#money").html(money.toFixed(2));
+    $("#balance").html(money.toFixed(2));
     $("#credit").html(creditScore.toFixed(2));
 
     var time = new Date().getTime() - startTime / 10000;
@@ -33,10 +33,9 @@ function updateStats() {
     creditHistory.push({time: time, credit: creditScore});
 }
 
-
 function addMoney(delta) {
     money += delta;
-    $("#money").html(money.toFixed(2));
+    $("#balance").html(money.toFixed(2));
     var time = new Date().getTime() - startTime / 10000;
     moneyHistory.push({time: time, money: money});
 }
@@ -51,8 +50,8 @@ function moneyString(num){
     return "$" + num.toFixed(2);
 }
 function moneyHtml(num){
-    //return num.toFixed(2);
-    return "<p class='money'>$" + num.toFixed(2) + "</p>";
+    return num.toFixed(2);
+    //return "<p class='money'>$" + num.toFixed(2) + "</p>";
 }
 
 function getLoan(scale) {
@@ -70,11 +69,6 @@ function getLoan(scale) {
 
     return loan;
 }
-
-function Occupation() {
-
-}
-
 
 function Loan(name, amount, length, dpr, numPayments, payment) {
     console.log("[LOAN] creating loan");
@@ -215,11 +209,12 @@ function Task(name, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skill
     this.running = false;
 }
 
-var initTask = function (nextPaymentDate, domParent = TASKS) {
+var initTask = function (nextPaymentDate, domParent) {
     this.nextPaymentDate = nextPaymentDate;
     this.domParent = domParent;
-};
 
+    drawTask.call(this);
+};
 
 var destroyTask = function() {
     this.complete = true;
@@ -267,8 +262,7 @@ var drawTask = function(){
             "<br>Time: <b class='completion-time'>" + Math.floor(this.time) + "</b>" +
             "<br>Profits: " + moneyHtml(this.rewardMoney) + 
             "<br>Time left: <h4 class='time-left'></h4>"+
-            "<button class='btn btn-inverse start-task'>Start</button></div>" +
-            "");
+            "<button class='btn btn-inverse start-task'>Start</button></div>");
 
     this.button = this.dom.find('button');
 
@@ -278,12 +272,17 @@ var drawTask = function(){
         me.data.startTask.call(me.data);
     });
 
+
     this.disableButton = function () {
         this.button.addClass('disabled');
     };
     this.enableButton = function () {
         this.button.removeClass('disabled');
     };
+
+    console.log("DOM PARENT");
+    console.log(this.domParent);
+    this.domParent.append(this.dom);
 };
 
 var inputDeductor = 0;
@@ -307,8 +306,11 @@ var initAsset = function(storeAsset, parentDom, infoDom) {
     this.storeAsset = storeAsset;
 
     if (!this.storeAsset) {
-        for (var task in this.tasks) {
-            initTask.call(task);
+        for (var i = 0; i < this.tasks.length; i++) {
+            var task = this.tasks[i];
+            console.log("creating a new task");
+            console.log(task);
+            initTask.call(task, $('.tasks'));
         }
     }
     drawAsset.call(this);
@@ -352,10 +354,11 @@ var drawAsset = function(){
             "<button class='btn btn-inverse'>" + (this.storeAsset ?"Purchase":"Liquidate") + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
-    this.dataDom = $("<div class='asset'><div class='row'>" +
-            "<h3>" + this.name + "</h3><br>" +
-            "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
-            "<br>Liquidation Price: <h4 class='time-left'></h4>"+
+    this.dataDom = $("<div class='asset-information'><div class='row'>" +
+            "<h2>" + this.name + "</h2>" +
+            "<br><img class='assetImg' src = '" + this.image + "'>" + 
+            "<br>Base Price: " + this.baseValue + 
+            "<br>Activities: " + this.tasksString +
             "</div></div>");
 
     this.button = this.dom.find('button');
@@ -392,11 +395,11 @@ var ALL_TASKS = {
 
 // POPULATE ITEMS
 var ALL_ITEMS = [
-    new Asset("Apartment", "./apartment.jpg", [ALL_TASKS.bnbApartment], 30000, {}),
-    new Asset("House", "./house.jpg", [ALL_TASKS.bnbHouse], 150000, {}),
-    new Asset("Mansion", "./mansion.jpg", [ALL_TASKS.bnbMansion], 150000, {}),
+    new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment], 30000, {}),
+    new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse], 150000, {}),
+    new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion], 150000, {}),
 
-    new Asset("Bike", "./mansion.jpg", [], 60, {}),
+    new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic], 60, {}),
     new Asset("Scooter", "./mansion.jpg", [], 30, {}),
     new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
     new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber], 150000, {}),
