@@ -26,7 +26,7 @@ h2 {
 }
 .info {
     text-align: center;
-    background-color:#C0392B;
+    background-color:#BDC3C7;
     border-radius: 7px;
     box-shadow: inset 1px 1px 2px #000;
     height: 150px;
@@ -36,11 +36,13 @@ h2 {
 
 body {
     position: absolute;
+    padding:10px;
+    background-color: #ECF0F1;
 }
+
 .graph {
     width: 100%;
     border-radius: 7px;
-
 }
 .active {
     background-color: white;
@@ -50,26 +52,11 @@ body {
   text-align: center;
   vertical-align: middle;
 }
-.main-info {
-    font-size: 2em;
-    color: #2ECC71;
-    text-shadow: 1px 1px 1px #000;
-}
-.main {
-   background-color: blue;
-}
-.tab-pane {
-    border-radius: 7px;
-    background-color:brown;
-}
+
 .inner-tab-pane {
     background-color:white;
     padding: 20px;
     border-radius: 7px;
-}
-body{
-    padding:10px;
-    background-color: #7F8C8D;
 }
 
 .graph_image {

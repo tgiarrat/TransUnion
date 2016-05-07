@@ -11,6 +11,7 @@ var creditHistory = [];
 var money = 5000;
 var creditScore = 500;
 
+
 moneyHistory.push({time: 0, money: money});
 creditHistory.push({time: 0, credit: creditScore});
 
@@ -21,6 +22,27 @@ function updateStats() {
     var time = new Date().getTime() - startTime / 10000;
     moneyHistory.push({time: time, money: money});
     creditHistory.push({time: time, credit: creditScore});
+}
+
+
+function addMoney(delta) {
+    money += delta;
+    $(".money").html(money.toFixed(2));
+    var time = new Date().getTime() - startTime / 10000;
+    moneyHistory.push({time: time, money: money});
+}
+function addCredit(delta) {
+    credit += delta;
+    $(".credit").html(credit.toFixed(2));
+    var time = new Date().getTime() - startTime / 10000;
+    creditHistory.push({time: time, credit: credit});
+}
+
+function moneyString(num){
+    return "$" + num.toFixed(2);
+}
+function moneyHtml(num){
+    return "<p class='money'>$" + num.toFixed(2) + "</p>";
 }
 
 function getLoan(scale) {
@@ -78,7 +100,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
             var seconds = Math.floor((timeLeft / SECOND) % 60);
             var minutes = Math.floor((timeLeft / MINUITE) % 60);
             var hours = Math.floor((timeLeft / HOUR) % 24);
-            
+
             countdown.html(hours + ":" + minutes + ":" + seconds);
             timeLeft -= 10;
             timeLeft <= 0 && clearInterval(interval);
@@ -159,50 +181,131 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 }
 
 
-function Task(parentDom, time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
-    this.parentDom = parentDom;
+function Task(time, rewardMoney, rewardCS, cost = 0,oneTime = false, skillReq = 0){
     this.skillReq = skillReq;
     this.oneTime = oneTime;
+
     this.time = time;
+
     this.rewardMoney = rewardMoney;
     this.rewardCS = rewardCS;
+
     this.running = false;
-
-    this.init = function (nextPaymentDate, domParent) {
-        this.nextPaymentDate = nextPaymentDate;
-        this.domParent = domParent;
-
-        this.dom = $("<li><div>name:"+this.name+" amount: "+ this.amount+ "</div></li>");
-
-        this.domParent.append(this.dom);
-
-
-        setTimeout(function (me) {
-            me.endOfPeriod.call(me);
-        }, nextPaymentDate - (new Date()).getTime(), this);
-    };
-
-    this.init = function() {
-        //show self
-    };
-
-    this.start = function() {
-        if (!this.running) {
-            money -= this.cost;
-            this.running = true;
-            setTimeout(this.time, this.end);
-        }
-    };
-
-    this.end = function(){
-        money += rewardMoney();
-        rewardCS.go();
-        if (oneTime)
-        {
-            //hide myself
-        }
-
-        this.running = false;
-    };
 }
 
+var initTask = function (nextPaymentDate, domParent) {
+    this.nextPaymentDate = nextPaymentDate;
+    this.domParent = domParent;
+};
+
+
+var destroyTask = function() {
+    this.complete = true;
+    this.dom.remove();
+};
+
+var completeTask = function() {
+    this.running = false;
+    addMoney(this.rewardMoney);
+    addCredit(this.rewardCS);
+
+    if (oneTime) {
+        this.destroyTask();
+    }
+};
+
+var startTask = function() {
+    if (!this.running) {
+        var timeLeft = this.time;
+        this.running = true;
+
+        setTimeout(function(me) {
+            me.completeTask.call(me);
+        }, this.time, this);
+
+        var interval = setInterval(function () {
+            var seconds = Math.floor((timeLeft / SECOND) % 60);
+            var minutes = Math.floor((timeLeft / MINUITE) % 60);
+            var hours = Math.floor((timeLeft / HOUR) % 24);
+
+            this.countdown.html(hours + ":" + minutes + ":" + seconds);
+            timeLeft -= 10;
+            timeLeft <= 0 && clearInterval(interval);
+        }, 11);
+
+    } else {
+        this.disableButton.call(this);
+    }
+};
+
+
+var drawTask = function(){
+    this.dom = $("<li><div class='task'><div class='row'>" +
+            "<h3>" + this.name + "</h3><br>" +
+            "Payout: <b class='reward'>" + Math.floor(this.reward) + "</b><br>" +
+            "Comletion time: <b class='completion-time'> " + Math.floor(this.time) + "</b><br>"+
+            "<br>Time left until next payment: <h4 class='time-left'></h4>"+
+            "<button class='btn btn-inverse'>Make Payment</button>" +
+            "</div></div></li>");
+
+    this.button = this.dom.find('button');
+
+    this.countdown = this.dom.find('.time-left');
+
+    this.button.click(this, function (me) {
+        me.data.startTask.call(me.data);
+    });
+
+    this.disableButton = function () {
+        this.button.addClass('disabled');
+    };
+    this.enableButton = function () {
+        this.button.removeClass('disabled');
+    };
+};
+
+var inputDeductor = 0;
+
+function Asset(name, tasks, value, buffs) {
+    this.name = name;
+    this.tasks = tasks;
+    this.value = value;
+    this.inputDeductor = inputDeductor;
+
+}
+
+function initAsset(parentDom) {
+    this.parentDom = parentDom;
+
+    for (var task in this.tasks) {
+        initTask.call(task);
+    }
+}
+
+function destroyAsset() {
+    for (var task in this.tasks) {
+        destroyTask.call(task);
+    }
+    addMoney(this.value);
+}
+
+
+var drawAsset = function(){
+    var tasksString = "";
+    for (var task in tasks) {
+        taskString += task.name + " ";
+    }
+
+    this.dom = $("<li><div class='asset'><div class='row'>" +
+            "<h3>" + this.name + "</h3><br>" +
+            "<br>Created Tasks: <p class='tasks'>" + taskString + "</b><br>" +
+            "<br>Liquidation Price: <h4 class='time-left'></h4>"+
+            "<button class='btn btn-inverse'>Liquidate " +moneyHtml(this.value)+ "</button>" +
+            "</div></div></li>");
+
+    this.button = this.dom.find('button');
+
+    this.button.click(this, function (me) {
+        me.data.destroyAsset.call(me.data);
+    });
+};
