@@ -289,8 +289,9 @@ var Asset = function (name, image, tasks, baseValue, minimumCredit, buffs) {
     this.price = baseValue + (baseValue * (0.1 - 0.1*(creditScore/850)));
 };
 
-function initAsset(storeAsset, parentDom) {
+function initAsset(storeAsset, parentDom, infoDom) {
     this.parentDom = parentDom;
+    this.infoDom = infoDom;
 
     if (!storeAsset) {
         for (var task in this.tasks) {
@@ -323,11 +324,24 @@ var drawAsset = function(){
             "<button class='btn btn-inverse'>Liquidate " + moneyHtml(this.price)+ "</button>" +
             "</div></div></li>");
 
+    this.dataDom = $("<div class='asset'><div class='row'>" +
+            "<h3>" + this.name + "</h3><br>" +
+            "<br>Created Tasks: <p class='tasks'>" + tasksString + "</b><br>" +
+            "<br>Liquidation Price: <h4 class='time-left'></h4>"+
+            "<button class='btn btn-inverse'>Liquidate " + moneyHtml(this.price)+ "</button>" +
+            "</div></div>");
+
     this.button = this.dom.find('button');
 
     this.button.click(this, function (me) {
         me.data.destroyAsset.call(me.data);
     });
+    this.dom.click(this, function (me) {
+        console.log("CLICKED");
+        me.data.infoDom.empty();
+        me.data.infoDom.append(me.data.dataDom);
+    });
+
     this.parentDom.append(this.dom);
 };
 
@@ -370,7 +384,7 @@ var ALL_ITEMS = [
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
     var asset = ALL_ITEMS[i];
-    initAsset.call(asset, 1, $('.store'));
+    initAsset.call(asset, 1, $('.store'), $('.asset-info'));
 }
 
 
