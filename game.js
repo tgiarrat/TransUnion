@@ -369,7 +369,6 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
-
     basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
 
     bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)})(),
@@ -378,8 +377,6 @@ var ALL_TASKS = {
 
     uber: (function() {return new Task("Uber", DAY, 200, 0)})(),
     getMarried: (function() {return new Task("Uber", DAY, 200, 0)})(),
-
-    getMarried: new Task("Get Married", YEAR, 0, 0, 1000),  //TODO adjust credit
 };
 
 // POPULATE ITEMS
@@ -411,6 +408,11 @@ var ALL_ITEMS = [
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
     var asset = ALL_ITEMS[i];
+    initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
+}
+
+for (var i = 0; i < SELECTED_TASKS.length; i ++) {
+    var task = SELECTED_TASKS[i];
     initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
 }
 
