@@ -1,0 +1,28 @@
+body, html {
+   height: 100%; 
+}
+
+*, html, body, a, h1, 
+h2, h3, h4, h5, div, head, 
+header, main, p, a, {{
+   margin: 0px; 
+   padding: 0px; 
+}
+
+#navbar {
+   margin-bottom:0; 
+}
+
+.container {
+   width:100%;
+   padding-right: 0;
+   padding-left: 0;
+   margin-right: auto;
+   margin-left: auto; 
+}
+
+.row {
+   margin-right: 0;
+   margin-left: 0; 
+}
+
