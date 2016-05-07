@@ -142,21 +142,24 @@ a img{
   stroke-width: 1.5px;
 }
 .owned-assets, .store-assets {
-    list-style:none;
-    padding-left:0px; none;
+    list-style: none;
+    padding-left: 0px;
 }
 .asset-info {
-    text-align:center;
-    position: fixed;
+    text-align: center;
+    
+    position: absolute;
     right: 0%;
-    width:33%;
     margin-right: 5px;
 }
 .asset{
-    border: 1px solid black;
-    border-radius: 3px;
-    background-color: #95A5A6;
+    border: 1px;
+    background-color: #f2f2f2;
     padding: 5px;
+	margin-bottom: 10px;
+	border-color: black;
+	border-width: 1px;
+    box-shadow: 1px 1px 2px #000;
 }
 .assetImg {
     width: 50%;
@@ -164,7 +167,10 @@ a img{
     border-radius: 5px;
 }
 .asset h3{
+	font-size: 20px;
     float:left;
+	margin: 20px;
+	margin-right: 5px;
     padding-left: 10px;
 }
 .asset button{
@@ -180,6 +186,7 @@ div.store, div.owned {
     overflow-y:auto;
     text-align:center;
     border-radius:15px;
+	
 }
 .fix {
     position:fixed;
@@ -203,5 +210,21 @@ div.store, div.owned {
     margin-color: #f84a0a;
     padding: 10px;
     border-radius: 4px;
+}
+
+.verticalLine {
+    border-left: thick solid #a0a0a0;
+	position: absolute !important;
+	height: 300px;
+	width: 1px;	
+	z-index: 30;
+}
+
+.verticalLine .A{
+	left: 33px;
+}
+
+.verticalLine .B{
+	right: 33%;
 }
 
