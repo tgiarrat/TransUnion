@@ -18,10 +18,13 @@ a img{
 .tophead {
 	position: fixed !important;
 	overflow: hidden;
+	z-index: 1000;
 }
 
 .navbar-fixed-top {
-  top: 130px;
+	padding: 20px 10px 0px 10px;
+	top: 130px;
+	background-color: #f0f0f0;
 }
 
 .tab {
@@ -62,7 +65,7 @@ a img{
 .inner-tab-pane {
     background-color:white;
     padding: 20px;
-	padding-top: 220px;
+	padding-top: 240px;
     border-radius: 7px;
 }
 
