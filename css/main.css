@@ -26,7 +26,7 @@ a img{
 
 .tab {
    margin-bottom:0px;
-   background-color:white;
+   background-color: #f0f0f0;
 }
 .tab-left {
    margin-bottom:0px;
@@ -39,7 +39,6 @@ a img{
 .info {
     text-align: center;
     background-color:#a9d161;
-    border-radius: 7px;
     box-shadow: inset 0px 1px 2px #000;
     height: 130px;
     margin: 0px;
@@ -52,7 +51,7 @@ a img{
     border-radius: 7px;
 }
 .active {
-    background-color: white;
+    color: black;
 }
 
 .head_item_wrapper {
@@ -63,7 +62,7 @@ a img{
 .inner-tab-pane {
     background-color:white;
     padding: 20px;
-	padding-top: 200px;
+	padding-top: 220px;
     border-radius: 7px;
 }
 
