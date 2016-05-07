@@ -69,6 +69,14 @@ function getLoan(scale) {
     return loan;
 }
 
+function getFormattedTime(input) {
+    var seconds = Math.floor((input / SECOND) % 60);
+    var minutes = Math.floor((input / MINUITE) % 60);
+    var hours = Math.floor((input / HOUR));
+    return (hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+
+}
+
 function Loan(name, amount, length, dpr, numPayments, payment) {
     money += amount;
 
@@ -98,7 +106,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         var countdown = this.dom.find('.time-left');
         var seconds = Math.floor((timeLeft / SECOND) % 60);
         var minutes = Math.floor((timeLeft / MINUITE) % 60);
-        var hours = Math.floor((timeLeft / HOUR) % 24);
+        var hours = Math.floor((timeLeft / HOUR));
 
         countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
         var interval = setInterval(function () {
@@ -107,7 +115,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
                 timeLeft = 0;
             seconds = Math.floor((timeLeft / SECOND) % 60);
             minutes = Math.floor((timeLeft / MINUITE) % 60);
-            hours = Math.floor((timeLeft / HOUR) % 24);
+            hours = Math.floor((timeLeft / HOUR));
 
             countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
 
@@ -239,11 +247,7 @@ var startTask = function() {
 
         var interval = setInterval(function () {
             timeLeft -= 1000;
-            var seconds = Math.floor((timeLeft / SECOND) % 60);
-            var minutes = Math.floor((timeLeft / MINUITE) % 60);
-            var hours = Math.floor((timeLeft / HOUR) % 24);
-
-            countdown.html(hours + ":" + minutes + ":" + seconds);
+            countdown.html(getFormattedTime(timeLeft));
             timeLeft <= 0 && clearInterval(interval);
         }, 1000);
 
@@ -254,17 +258,12 @@ var startTask = function() {
 
 var drawTask = function(){
 
-    var seconds = Math.floor((this.time / SECOND) % 60);
-    var minutes = Math.floor((this.time / MINUITE) % 60);
-    var hours = Math.floor((this.time / HOUR));
-
-    var totalTime = (hours + ":" + minutes + ":" + seconds);
 
     this.dom = $("<div class='task'>" +
             "<h3>" + this.name + "</h3>"+
             "<br>Time: <b class='completion-time'>" + Math.floor(this.time) + "</b>" +
             "<br>Profits: " + moneyHtml(this.rewardMoney) + 
-            "<br>Time left: <h4 class='time-left'>"+totalTime +"</h4>"+
+            "<br>Time left: <h4 class='time-left'>"+getFormattedTime(this.time) +"</h4>"+
             "<button class='btn btn-inverse start-task'>Start</button></div>");
 
     this.button = this.dom.find('button');
@@ -369,6 +368,9 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
+    basic: (function() {return new Task("Do chores",5* MINUITE, 20, 0)})(),
+    work: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
+    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
     basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
 
     bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)})(),
@@ -411,9 +413,11 @@ for (var i = 0; i < ALL_ITEMS.length; i ++) {
     initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
 }
 
+var SELECTED_TASKS = [ALL_TASKS.basic];
+
 for (var i = 0; i < SELECTED_TASKS.length; i ++) {
     var task = SELECTED_TASKS[i];
-    initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
+    initTask.call(task, $('.task-table'));
 }
 
 updateStats();
