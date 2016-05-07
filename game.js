@@ -59,13 +59,13 @@ function getLoan(scale) {
     var loanNames = ["Car", "House", "Food", "School"];
 
     var name = loanNames[Math.floor(Math.random() * loanNames.length)];
-    var dpr = 0.4 * ((1000-creditScore) / 1000) * Math.random();
+    var dpr = 0.6 * ((1100-creditScore) / 1200) * Math.random();
     var amount = Math.ceil(Math.random() * scale + scale);
 
-    var length = Math.floor(Math.random() * (MINUITE * 5) + SECOND * 5);
+    var length = Math.floor(Math.random() * (SECOND * 5) + SECOND * 5);
     var numPayments = Math.floor(Math.random() * 20 + 5);
 
-    var loan = new Loan(name, amount, length, dpr, numPayments);
+    var loan = new Loan(name, amount, length * numPayments, dpr, numPayments);
     console.log(loan);
 
     return loan;
@@ -80,7 +80,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     console.log("[LOAN] creating loan");
     money += amount;
 
-    this.name = name; // name of loan eg: "car loan"
+    this.name = name + " #" + Math.round(Math.random()*100); // name of loan eg: "car loan"
     this.amount = amount;
     this.balance = amount;
     this.payment = payment = payment | 0;
@@ -92,8 +92,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
     this.draw = function(){
         this.dom = $(" <div class='loan'>" +
-                "Loan " + this.name + " - Balance: <b class='balance'>" + this.balance + "</b>"+
-                "<br>Payment amount: <b class='payment'>" + Math.floor(this.payment) + "</b>" +
+                "Loan " + this.name + " - Balance: <b class='balance'>$" + this.balance.toFixed(2) + "</b>"+
+                "<br>Payment amount: <b class='payment'>$" + this.payment.toFixed(2) + "</b>" +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
                 "<br>Time left until next payment: <h4 class='time-left'></h4>"+
                 "<button class='btn btn-inverse'>Make Payment</button></div>" +
@@ -158,7 +158,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
     this.endOfPeriod = function () {
         if (this.payment !== 0) {
-            this.balance += this.payment * this.dpr * this.period / DAY;
+            this.balance += 1 + this.payment * this.dpr * this.period / DAY;
             addCredit( -100); //TODO ACTUALLY EFFECT SCORE
             updateStats();
         }
