@@ -65,13 +65,11 @@ function getLoan(scale) {
     var numPayments = Math.floor(Math.random() * 20 + 5);
 
     var loan = new Loan(name, amount, length * numPayments, dpr, numPayments);
-    console.log(loan);
 
     return loan;
 }
 
 function Loan(name, amount, length, dpr, numPayments, payment) {
-    console.log("[LOAN] creating loan");
     money += amount;
 
     this.name = name + " #" + Math.round(Math.random()*100); // name of loan eg: "car loan"
@@ -90,8 +88,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
                 "<br>Payment amount: <b class='payment'>$" + this.payment.toFixed(2) + "</b>" +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
                 "<br>Time left until next payment: <h4 class='time-left'></h4>"+
-                "<button class='btn btn-inverse'>Make Payment</button></div>" +
-                "");
+                "<button class='btn btn-inverse'>Make Payment</button></div>");
 
         this.button = this.dom.find('button');
         this.paymentDom = this.dom.find('.payment');
@@ -99,26 +96,26 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
         var timeLeft = this.period;
         var countdown = this.dom.find('.time-left');
-		var seconds = Math.floor((timeLeft / SECOND) % 60);
+        var seconds = Math.floor((timeLeft / SECOND) % 60);
         var minutes = Math.floor((timeLeft / MINUITE) % 60);
         var hours = Math.floor((timeLeft / HOUR) % 24);
 
         countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
         var interval = setInterval(function () {
-			timeLeft -= SECOND;
-			if (timeLeft <= 0)
-				timeLeft = 0;
+            timeLeft -= SECOND;
+            if (timeLeft <= 0)
+                timeLeft = 0;
             seconds = Math.floor((timeLeft / SECOND) % 60);
             minutes = Math.floor((timeLeft / MINUITE) % 60);
             hours = Math.floor((timeLeft / HOUR) % 24);
 
             countdown.html(hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
-            
+
             if (timeLeft <= 0) {
-				
-				clearInterval(interval);
-				
-			}
+
+                clearInterval(interval);
+
+            }
         }, SECOND);
 
 
@@ -129,7 +126,6 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     };
 
     this.destroy = function () {
-        console.log("[LOAN] destroying loan " + this.name);
         this.done = true;
     };
 
@@ -162,7 +158,6 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         } else {
             this.payment = this.balance/ --this.numPayments;
         }
-		console.log("here");
         this.nextPaymentDate = this.nextPaymentDate + this.period;
 
         if (this.dom)
@@ -225,9 +220,10 @@ var completeTask = function() {
     addMoney(this.rewardMoney);
     addCredit(this.rewardCS);
 
-    if (oneTime) {
+    if (this.oneTime) {
         this.destroyTask();
     }
+    this.button.removeClass('disabled');
 };
 
 var startTask = function() {
@@ -236,31 +232,39 @@ var startTask = function() {
         this.running = true;
 
         setTimeout(function(me) {
-            me.completeTask.call(me);
+            completeTask.call(me);
         }, this.time, this);
 
+        var countdown = this.countdown;
+
         var interval = setInterval(function () {
+            timeLeft -= 1000;
             var seconds = Math.floor((timeLeft / SECOND) % 60);
             var minutes = Math.floor((timeLeft / MINUITE) % 60);
             var hours = Math.floor((timeLeft / HOUR) % 24);
 
-            this.countdown.html(hours + ":" + minutes + ":" + seconds);
-            timeLeft -= 10;
+            countdown.html(hours + ":" + minutes + ":" + seconds);
             timeLeft <= 0 && clearInterval(interval);
         }, 1000);
 
-    } else {
-        this.disableButton.call(this);
     }
+    this.button.addClass('disabled');
 };
 
 
 var drawTask = function(){
-    this.dom = $(" <div class='task'>" +
+
+    var seconds = Math.floor((this.time / SECOND) % 60);
+    var minutes = Math.floor((this.time / MINUITE) % 60);
+    var hours = Math.floor((this.time / HOUR));
+
+    var totalTime = (hours + ":" + minutes + ":" + seconds);
+
+    this.dom = $("<div class='task'>" +
             "<h3>" + this.name + "</h3>"+
             "<br>Time: <b class='completion-time'>" + Math.floor(this.time) + "</b>" +
             "<br>Profits: " + moneyHtml(this.rewardMoney) + 
-            "<br>Time left: <h4 class='time-left'></h4>"+
+            "<br>Time left: <h4 class='time-left'>"+totalTime +"</h4>"+
             "<button class='btn btn-inverse start-task'>Start</button></div>");
 
     this.button = this.dom.find('button');
@@ -271,16 +275,6 @@ var drawTask = function(){
         startTask.call(me.data);
     });
 
-
-    this.disableButton = function () {
-        this.button.addClass('disabled');
-    };
-    this.enableButton = function () {
-        this.button.removeClass('disabled');
-    };
-
-    console.log("DOM PARENT");
-    console.log(this.domParent);
     this.domParent.append(this.dom);
 };
 
@@ -298,8 +292,6 @@ var Asset = function (name, image, tasks, baseValue, minimumCredit, buffs) {
 };
 
 var initAsset = function(storeAsset, parentDom, infoDom) {
-    console.log("creating a new asset");
-    console.log(this);
     this.parentDom = parentDom;
     this.infoDom = infoDom;
     this.storeAsset = storeAsset;
@@ -307,8 +299,6 @@ var initAsset = function(storeAsset, parentDom, infoDom) {
     if (!this.storeAsset) {
         for (var i = 0; i < this.tasks.length; i++) {
             var task = this.tasks[i];
-            console.log("creating a new task");
-            console.log(task);
             initTask.call(task, $('.task-table'));
         }
     }
@@ -331,7 +321,7 @@ var buyAsset = function(parentBuyDom) {
     if (creditScore < this.minimumCredit) return alert("not enough credit");
     if (this.storeAsset) {
         addMoney(-this.price);
-        
+
         // TODO INCREMENT THE CREDIT FUCKING SCORE
 
         this.dom.remove();
@@ -346,7 +336,6 @@ var drawAsset = function(){
     for (var task in this.tasks) {
         tasksString += task.name + " ";
     }
-    console.log("tasks String" + this.price);
 
     this.dom = $("<li><div class='asset'><div class='row'>" +
             "<h3>" + this.name + "</h3>" +
@@ -381,13 +370,14 @@ var drawAsset = function(){
 
 var ALL_TASKS = {
 
-	basic: new Task("Do chores", DAY, 20, 0),
+    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)})(),
 
-    bnbApartment: new Task("Air BNB Apartment", WEEK, 1000, 0),
-    bnbHouse: new Task("Air BNB House", WEEK, 5000, 0), 
-    bnbMansion: new Task("Air BNB Mansion", WEEK, 20000, 0), 
+    bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)})(),
+    bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)})(),
+    bnbMansion: (function() {return new Task("Air BNB Apartment", WEEK, 20000, 0)})(),
 
-    uber: new Task("Uber", DAY, 200, 0), 
+    uber: (function() {return new Task("Uber", DAY, 200, 0)})(),
+    getMarried: (function() {return new Task("Uber", DAY, 200, 0)})(),
 
     getMarried: new Task("Get Married", YEAR, 0, 0, 1000),  //TODO adjust credit
 };

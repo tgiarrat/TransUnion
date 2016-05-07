@@ -107,6 +107,21 @@ a img{
 	min-width: 200px;
 }
 
+.task{
+	float: left;
+    padding: 5px;
+    margin-top:2px;
+	margin-left: 10px;
+    background-color: #f1f1f1;
+	border-color: black;
+	border-width: 1px;
+    box-shadow: 3px 3px 8px #000;
+    margin: 10px;
+    color: black;
+	width: 31%;
+	min-width: 200px;
+}
+
 .tab-pane {
     text-align:center
 }
@@ -181,6 +196,12 @@ div.store, div.owned {
 .asset-info-filler {
     padding-bottom: 100px;
     background-color: blue;
+}
 
+.inner-decorator {
+    background-color: #f84a0a;
+    margin-color: #f84a0a;
+    padding: 10px;
+    border-radius: 4px;
 }
 
