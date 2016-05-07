@@ -59,17 +59,31 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.dpr = dpr;
 
     this.draw = function(){
-        var d = new Date(this.nextPaymentDate);
-        var month = d.getMonth()+1;
-        var date = d.getDate()+"-"+month+"-"+d.getFullYear();
         this.dom = $("<li><div class='loan'><div class='row'><div class='col-xs-8'>" +
-                "Loan " + this.name + " - Balance: " + this.balance +
-                "<br>Payment amount: " + this.payment + " - Due: " + date +
+                "Loan " + this.name + " - Balance: <b class='balance'>" + this.balance + "</b>"+
+                "<br>Payment amount: <b class='payment'>" + Math.floor(this.payment) + "</b>" +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
-                "<br></div><div class='col-xs-4'><button class='btn btn-inverse'>Make Payment</button>" +
+                "<br>Time left until next payment: <h4 class='time-left'></h4>"+
+                "</div><div class='col-xs-4'><button class='btn btn-inverse'>Make Payment</button>" +
                 "</div></div></div></li>");
 
         this.button = this.dom.find('button');
+        this.paymentDom = this.dom.find('.payment');
+        this.balanceDom = this.dom.find('.balance');
+
+        var timeLeft = this.period;
+        var countdown = this.dom.find('.time-left');
+
+        var interval = setInterval(function () {
+            var seconds = Math.floor((timeLeft / SECOND) % 60);
+            var minutes = Math.floor((timeLeft / MINUITE) % 60);
+            var hours = Math.floor((timeLeft / HOUR) % 24);
+            
+            countdown.html(hours + ":" + minutes + ":" + seconds);
+            timeLeft -= 10;
+            timeLeft <= 0 && clearInterval(interval);
+        }, 11);
+
 
         this.button.click(this, function (me) {
             me.data.makePayment.call(me.data);
@@ -88,6 +102,9 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
             updateStats();
             this.balance -= this.payment;
             this.payment = 0;
+            this.paymentDom.html(Math.floor(this.payment));
+            this.balanceDom.html(Math.floor(this.balance));
+
             this.button.addClass('disabled');
         }
         if (this.numPayments <= 1) {
@@ -120,13 +137,18 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         setTimeout(function (me) {
             if (!me.done)
                 me.endOfPeriod.call(me);
-        }, 1000, this);
+        }, this.period, this); //TODO: change this to period
 
     };
+
 
     this.init = function (nextPaymentDate, domParent) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
+
+        this.draw.call(this);
+        this.button.removeClass('disabled');
+        this.domParent.prepend(this.dom);
 
         setTimeout(function (me) {
             me.endOfPeriod.call(me);
