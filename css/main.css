@@ -43,14 +43,7 @@ h2 {
     color: white;
 }
 
-<<<<<<< HEAD
-body {
-    position: absolute;
-    padding:10px;
-    background-color: #ECF0F1;
-}
-=======
->>>>>>> be7902f4c8725c28170d22fe3d83fd1f2d7dd024
+
 
 .graph {
     width: 100%;
@@ -71,13 +64,12 @@ body {
 	padding-top: 200px;
     border-radius: 7px;
 }
-<<<<<<< HEAD
-=======
+
 body{
     padding:10px;
 
 }
->>>>>>> be7902f4c8725c28170d22fe3d83fd1f2d7dd024
+
 
 .graph_image {
   padding: 15px 0 10px 0;
