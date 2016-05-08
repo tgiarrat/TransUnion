@@ -1,60 +1,66 @@
-function plotGraph(elapsedTime) {
-    $('.graph-container').empty();
+function plotGraph() {
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 80},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    // define dimensions of graph
+    var m = [80, 80, 80, 80]; // margins
+    var w = 1000 - m[1] - m[3]; // width
+    var h = 400 - m[0] - m[2]; // height
 
-    var x = d3.time.scale()
-        .range([0, elapsedTime / 1000]);
+    // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
+    var data = [];
 
-    var y = d3.scale.linear()
-        .range([5000, 4000]);
+    for (var i = 0; i < moneyHistory.length; i ++) {
+        data.push(moneyHistory[i].money);
+    }
+    console.log(data);
 
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
+    // X scale will fit all values from data[] within pixels 0-w
+    var x = d3.scale.linear().domain([0, data.length]).range([0, w]);
+    // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+    var y = d3.scale.linear().domain([0, 10]).range([h, 0]);
+    // automatically determining max range can work something like this
+    // var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
 
-    var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left");
-
+    // create a line function that can convert data[] into x and y points
     var line = d3.svg.line()
-        .x(function(d) { return x(d.time); })
-        .y(function(d) { return y(d.money); });
+        // assign the X function to plot our line as we wish
+        .x(function(d,i) { 
+            // verbose logging to show what's actually being done
+            console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+            // return the X coordinate where we want to plot this datapoint
+            return x(i); 
+        })
+    .y(function(d) { 
+        // verbose logging to show what's actually being done
+        console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+        // return the Y coordinate where we want to plot this datapoint
+        return y(d); 
+    });
 
-    var svg = d3.select(".graph-container").insert("svg", ".graph")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // Add an SVG element with the desired dimensions and margin.
+    var graph = d3.select(".graph").append("svg:svg")
+        .attr("width", w + m[1] + m[3])
+        .attr("height", h + m[0] + m[2])
+        .append("svg:g")
+        .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-    x.domain(d3.extent(moneyHistory, function(d) { return d.time; }));
-    y.domain(d3.extent(moneyHistory, function(d) { return d.money; }));
-
-    svg.append("g")
+    // create yAxis
+    var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
+    // Add the x-axis.
+    graph.append("svg:g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + h + ")")
         .call(xAxis);
 
-    svg.append("g")
+
+    // create left yAxis
+    var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+    // Add the y-axis to the left
+    graph.append("svg:g")
         .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Price ($)");
+        .attr("transform", "translate(-25,0)")
+        .call(yAxisLeft);
 
-    svg.append("path")
-        .datum(moneyHistory)
-        .attr("class", "line")
-        .attr("d", line);
-
-    function type(d) {
-        d.time = d.time;
-        d.money = d.money;
-        return d;
-    }
+    // Add the line by appending an svg:path element with the data line we created above
+    // do this AFTER the axes above so that the line is above the tick-lines
+    graph.append("svg:path").attr("d", line(data));
 }
