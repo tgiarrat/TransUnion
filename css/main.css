@@ -5,56 +5,56 @@
 
 @media (min-width: 0px) {
 
-  .nav-justified > li {
-    display: table-cell;
-    width: 1%;
-  }
+    .nav-justified > li {
+        display: table-cell;
+        width: 1%;
+    }
 
 }
 
 * {
-	font-family: Intro;
+    font-family: Intro;
 }
 
 .nopad {
-   padding: 0px !important;
-   margin: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
 }
 
 h1 {
-  font-size:24px; 
+    font-size:24px; 
 }
 
 h2 {
-  font-size:18px; 
+    font-size:18px; 
 }
 
 a img{
-	height: 30px;
+    height: 30px;
 }
 
 .tophead {
-	position: fixed !important;
-	overflow: hidden;
-	z-index: 99999;
+    position: fixed !important;
+    overflow: hidden;
+    z-index: 99999;
 }
 
 .navbar-fixed-top {
-	padding: 20px 10px 0px 10px;
-	top: 130px;
-	background-color: #f0f0f0;
+    padding: 20px 10px 0px 10px;
+    top: 130px;
+    background-color: #f0f0f0;
 }
 
 .tab {
-   margin-bottom:0px;
-   background-color: #f0f0f0;
+    margin-bottom:0px;
+    background-color: #f0f0f0;
 }
 .tab-left {
-   margin-bottom:0px;
+    margin-bottom:0px;
 
 }
 .tab-right{
-   margin-bottom:0px;
+    margin-bottom:0px;
 }
 
 
@@ -63,7 +63,7 @@ a img{
     background-color:#a9d161;
     height: 130px;
     margin: 0px;
-	width: 100%;
+    width: 100%;
     color: white;
 }
 
@@ -76,50 +76,50 @@ a img{
 }
 
 .head_item_wrapper {
-  text-align: center;
-  vertical-align: middle;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .inner-tab-pane {
     background-color:white;
     padding: 20px;
-	padding-top: 240px;
+    padding-top: 240px;
     border-radius: 7px;
 }
 .graph_image {
-  
-  padding: 15px 0 10px 0;
-  width:100%;
+
+    padding: 15px 0 10px 0;
+    width:100%;
 }
 
 .loan{
-	float: left;
+    float: left;
     padding: 5px;
     margin-top:2px;
-	margin-left: 10px;
+    margin-left: 10px;
     background-color: #f1f1f1;
-	border-color: black;
-	border-width: 1px;
+    border-color: black;
+    border-width: 1px;
     box-shadow: 3px 3px 8px #000;
     margin: 10px;
     color: black;
-	width: 31%;
-	min-width: 200px;
+    width: 31%;
+    min-width: 200px;
 }
 
 .task{
-	float: left;
+    float: left;
     padding: 5px;
     margin-top:2px;
-	margin-left: 10px;
+    margin-left: 10px;
     background-color: #f1f1f1;
-	border-color: black;
-	border-width: 1px;
+    border-color: black;
+    border-width: 1px;
     box-shadow: 3px 3px 8px #000;
     margin: 10px;
     color: black;
-	width: 31%;
-	min-width: 200px;
+    width: 31%;
+    min-width: 200px;
 }
 
 .tab-pane {
@@ -127,19 +127,19 @@ a img{
 }
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
+    display: none;
 }
 
 .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
 }
 .owned-assets, .store-assets {
     list-style: none;
@@ -156,18 +156,18 @@ a img{
     border: 1px;
     background-color: #f2f2f2;
     padding: 5px;
-	margin-bottom: 10px;
-	border-color: black;
-	border-width: 1px;
+    margin-bottom: 10px;
+    border-color: black;
+    border-width: 1px;
     box-shadow: 1px 1px 2px #000;
 }
 
 .asset:hover{
-	background-color: #d3d3d3;
+    background-color: #d3d3d3;
 }
 
 .asset #active{
-	background-color: #d0d0d0;
+    background-color: #d0d0d0;
 }
 
 .assetImg {
@@ -176,10 +176,10 @@ a img{
     border-radius: 5px;
 }
 .asset h3{
-	font-size: 20px;
+    font-size: 20px;
     float:left;
-	margin: 20px;
-	margin-right: 5px;
+    margin: 20px;
+    margin-right: 5px;
     padding-left: 10px;
 }
 .asset button{
@@ -195,7 +195,7 @@ div.store, div.owned {
     overflow-y:auto;
     text-align:center;
     border-radius:15px;
-	
+
 }
 .fix {
     position:fixed;
@@ -229,17 +229,43 @@ div.store, div.owned {
 
 .verticalLine {
     border-left: thick solid #a0a0a0;
-	position: absolute !important;
-	height: 300px;
-	width: 1px;	
-	z-index: 30;
+    position: absolute !important;
+    height: 300px;
+    width: 1px;	
+    z-index: 30;
 }
 
 .verticalLine .A{
-	left: 33px;
+    left: 33px;
 }
 
 .verticalLine .B{
-	right: 33%;
+    right: 33%;
+}
+/* tell the SVG path to be a thin blue line without any area fill */
+path {
+    stroke: steelblue;
+    stroke-width: 1;
+    fill: none;
 }
 
+.axis {
+    shape-rendering: crispEdges;
+}
+
+.x.axis line {
+    stroke: lightgrey;
+}
+
+.x.axis .minor {
+    stroke-opacity: .5;
+}
+
+.x.axis path {
+    display: none;
+}
+
+.y.axis line, .y.axis path {
+    fill: none;
+    stroke: #000;
+}

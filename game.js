@@ -26,22 +26,12 @@ creditHistory.push({time: 0, credit: creditScore});
 addMoney(5000);
 addCredit(500);
 
-function updateStats() {
-    $("#balance").html(money.toFixed(2));
-    $("#credit").html(creditScore.toFixed(2));
-
-    var time = new Date().getTime() - startTime / 1000;
-    moneyHistory.push({time: time, money: money});
-    creditHistory.push({time: time, credit: creditScore});
-    plotGraph();
-}
-
 function addMoney(delta) {
     money += delta * moneyMulti;
     $("#balance").html(money.toFixed(2));
     var time = new Date().getTime() - startTime / 1000;
     moneyHistory.push({time: time, money: money});
-    plotGraph();
+    plotGraph(time);
 }
 function addCredit(delta) {
     creditScore += delta * creditMulti;
@@ -84,8 +74,6 @@ function getFormattedTime(input) {
 }
 
 function Loan(name, amount, length, dpr, numPayments, payment) {
-    money += amount;
-
     this.name = name + " #" + Math.round(Math.random()*100); // name of loan eg: "car loan"
     this.amount = amount;
     this.balance = amount;
@@ -145,8 +133,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
     this.makePayment = function() {
         if (this.payment !== 0) {
-            money -= this.payment;
-            updateStats();
+            addMoney(-this.payment);
             this.balance -= this.payment;
             this.payment = 0;
             this.paymentDom.html(Math.floor(this.payment));
@@ -164,8 +151,9 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.endOfPeriod = function () {
         if (this.payment !== 0) {
             this.balance += 1 + this.payment * this.dpr * this.period / DAY;
-            addCredit( -50); //TODO ACTUALLY EFFECT SCORE
-            updateStats();
+
+            addCredit(-50); //TODO ACTUALLY EFFECT SCORE
+            
         }
 
         if (this.numPayments <= 1) {
@@ -193,6 +181,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.nextPaymentDate = nextPaymentDate;
         this.domParent = domParent;
 
+        addMoney(this.amount);
+        addCredit(Math.random() * 50);
         //this.draw.call(this);
         //this.button.removeClass('disabled');
         //this.domParent.prepend(this.dom);
@@ -463,5 +453,3 @@ var go = function(score, type, action) {
 	else
 		credit += 0;
 }
-updateStats();
-
