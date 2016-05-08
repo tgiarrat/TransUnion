@@ -190,7 +190,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         //setTimeout(function (me) {
         //    me.endOfPeriod.call(me);
         //}, nextPaymentDate - (new Date()).getTime(), this);
-        loans.push(this);
+        //loans.push(this);
 		
 		this.endOfPeriod.call(this);
 		
