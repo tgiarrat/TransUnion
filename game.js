@@ -84,8 +84,19 @@ $(document).ready(function (){
     function getFormattedTime(input) {
         var seconds = Math.floor((input / SECOND) % 60);
         var minutes = Math.floor((input / MINUITE) % 60);
-        var hours = Math.floor((input / HOUR));
-        return (hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+        var hours = Math.floor((input / HOUR) % 24);
+
+        var days = Math.floor((input / DAY) % 7);
+        var weeks = Math.floor((input / WEEK));
+
+        var str = "";
+        if (weeks > 0) {
+            str += weeks + ":";
+        }
+        if (days > 0 || weeks > 0) {
+            str += (days < 10 ? "0" : "") + days + ":";
+        }
+        return str +=  (hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
 
     }
 
@@ -291,7 +302,7 @@ $(document).ready(function (){
 
         this.dom = $("<div class='task'>" +
                 "<h3>" + this.name + "</h3>"+
-                "<br>Time: <b class='completion-time'>" + Math.floor(this.time) + "</b>" +
+                "<br>Time: <b class='completion-time'>" + getFormattedTime(this.time) + "</b>" +
                 "<br>Profits: " + moneyHtml(this.rewardMoney) + 
                 "<br>Time left: <h4 class='time-left'>"+getFormattedTime(this.time) +"</h4>"+
                 "<button class='btn btn-inverse start-task'>Start</button></div>");
@@ -411,7 +422,7 @@ $(document).ready(function (){
         basic: (function() {return new Task("Do chores", 5* MINUITE, 20, 0)}),
 
         petDog: (function() {return new Task("Pet the dog", MINUITE, 20, 0)}),
-        petCat: (function() {return new Task("Pet the dog", YEAR, 20, 0)}),
+        petCat: (function() {return new Task("Pet the cat", YEAR, 20, 0)}),
 
         bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)}),
         bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)}),
@@ -430,23 +441,23 @@ $(document).ready(function (){
         new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
         new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
 
-        new Asset("Bike", "./mansion.jpg", [], 60, {}),
-        new Asset("Scooter", "./mansion.jpg", [], 30, {}),
-        new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 17000, {}),
-        new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 15000, {}),
+        new Asset("Bike", "./images/bike.jpg", [], 60, {}),
+        new Asset("Scooter", "./images/scooter.jpg", [], 30, {}),
+        new Asset("Car", "./images/car.jpg", [ALL_TASKS.uber()], 17000, {}),
+        new Asset("Truck", "./images/truck.jpg", [ALL_TASKS.uber()], 15000, {}),
 
-        new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
-        new Asset("747", "./mansion.jpg", [], 30000000, {}),
+        new Asset("Propeller Plane", "./images/plane.jpg", [], 150000, {}),
+        new Asset("747", "./images/jet.jpg", [], 30000000, {}),
 
-        new Asset("Cat", "./mansion.jpg", [ALL_TASKS.petCat()], 139, {}),
-        new Asset("Dog", "./mansion.jpg", [ALL_TASKS.petDog()], 340, {}, 10),
+        new Asset("Cat", "./images/cat.jpg", [ALL_TASKS.petCat()], 139, {}),
+        new Asset("Dog", "./images/dog.jpg", [ALL_TASKS.petDog()], 340, {}, 10),
 
-        new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
+        new Asset("Computer", "./images/computer.jpg", [], 150000, {}, 5),
 
-        new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried()], 150000, {}, Math.random()*100 - 50),
+        new Asset("Wedding Ring", "./images/ring.jpg", [ALL_TASKS.getMarried()], 150000, {}, Math.random()*100 - 50),
 
-        new Asset("Engineering Book", "./mansion.jpg", [ALL_TASKS.engineering()], 150000, {}),
-        new Asset("Construction Book", "./mansion.jpg", [ALL_TASKS.construction()], 150000, {}),
+        new Asset("Engineering Book", "./images/engbook.jpg", [ALL_TASKS.engineering()], 150000, {}),
+        new Asset("Construction Book", "./images/consbook.jpg", [ALL_TASKS.construction()], 150000, {}),
 
 
         new Asset("Stock A", "./mansion.jpg", [], 1000000, {}, 30),
@@ -485,86 +496,8 @@ $(document).ready(function (){
         }
         else
             credit += 0;
-    }
-
-
-    var ALL_TASKS = {
-        basic: (function() {return new Task("Do chores",.5* MINUITE, 20, 0)}),
-        work: (function() {return new Task("Do chores", MINUITE/2, 20, 0)}),
-        basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
-        basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
-
-        bnbApartment: (function() {return new Task("Air BNB Apartment", MINUITE/2, 1000, 0)}),
-        bnbHouse: (function() {return new Task("Air BNB Apartment", MINUITE/2, 5000, 0)}),
-        bnbMansion: (function() {return new Task("Air BNB Apartment", MINUITE/2, 20000, 0)}),
-
-        uber: (function() {return new Task("Uber", DAY, 200, 0)}),
-        getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
     };
 
-    // POPULATE ITEMS
-    var ALL_ITEMS = [
-        new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment()], 30000, {}),
-        new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
-        new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
-
-        new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic()], 60, {}),
-        new Asset("Scooter", "./mansion.jpg", [], 30, {}),
-        new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
-        new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
-
-        new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
-        new Asset("747", "./mansion.jpg", [], 150000, {}),
-
-        new Asset("Cat", "./mansion.jpg", [], 150000, {}),
-        new Asset("Dog", "./mansion.jpg", [], 150000, {}, 10),
-
-        new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
-
-        new Asset("Wedding Ring", "./images/ring.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
-
-        new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
-        new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
-
-        new Asset("Mic", "./mansion.jpg", [], 150000, {}),
-
-        new Asset("Stock A", "./images/stockA.png", [], 1000000, {}, 30),
-        new Asset("Stock B", "./images/stockB.png", [], 2000000, {}, 30),
-        new Asset("Stock C", "./images/stockC.png", [], 3000000, {}, 30),
-        ];
-
-    for (var i = 0; i < ALL_ITEMS.length; i ++) {
-        var asset = ALL_ITEMS[i];
-        initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
-    }
-
-    var SELECTED_TASKS = [ALL_TASKS.basic()];
-
-    for (var i = 0; i < SELECTED_TASKS.length; i ++) {
-        var task = SELECTED_TASKS[i];
-        initTask.call(task, $('.task-table'));
-    }
-    var go = function(score, type, action) {
-
-        var data = [];
-        data["score"] = score;
-        data["event"] = [];
-        data["event"][type] = action;
-
-        if (0 == 0){
-            $.ajax({
-                dataType: "json",
-                contentType: "application/json",
-                url: "http://ec2-52-53-177-180.us-west-1.compute.amazonaws.com/score-simulator/scoresim/simulateScore",
-                type: "POST",
-                data,
-                success: function(res) { console.log(res.score);  },
-                error:   function(res) { console.warn(res); }
-            });
-        }
-        else
-            credit += 0;
-    }
     $('#tabs').tab();
     $(".apply-small").click(function() {
         var loan = getLoan(10);
