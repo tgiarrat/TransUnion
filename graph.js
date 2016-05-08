@@ -9,6 +9,11 @@ function plotGraph(history) {
     // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
     var data = [];
 
+    for (var i = 0; i < history.length; i ++) {
+        data.push(history[i].money);
+    }
+    console.log(data);
+
 
     // X scale will fit all values from data[] within pixels 0-w
     var x = d3.scale.linear().domain([0, data.length]).range([0, w]);
