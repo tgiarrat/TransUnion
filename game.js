@@ -1,19 +1,21 @@
 $(document).ready(function (){
 
+	var loans = [];
+
     function bankrupt() {
         var temp;
         temp = loans.pop();
             while(temp) {
-                loan.balance = 0;
-                loan.payment = 0;
-                loan.numPayments = 0;
-                loan.makePayment();
+                temp.balance = 0;
+                temp.payment = 0;
+                temp.numPayments = 0;
+                temp.makePayment();
                 temp = loans.pop();
             }
         addCredit(-400);
     }
 
-    var loans = [];
+    
     var SECOND = 1000;
     var MINUITE = SECOND * 60;
     var HOUR = MINUITE * 60;
@@ -52,7 +54,7 @@ $(document).ready(function (){
     function addCredit(delta) {
         creditScore += delta * creditMulti;
         if (creditScore > 850) creditScore = 849;
-        if (creditScore < 300) creditScore = 299;
+        if (creditScore < 300) creditScore = 301;
         $("#credit").html(creditScore.toFixed(2));
         var time = new Date().getTime() - startTime / 1000;
         creditHistory.push({time: time, creditScore: creditScore});
@@ -75,7 +77,7 @@ $(document).ready(function (){
 
         var length = Math.floor(Math.random() * (SECOND * 5) + SECOND * 5);
         var numPayments = Math.floor(Math.random() * 20 + 5);
-
+		addCredit(-30);
         var loan = new Loan(name, amount, length * numPayments, dpr, numPayments);
 
         return loan;
