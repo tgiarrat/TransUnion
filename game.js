@@ -47,7 +47,7 @@ $(document).ready(function (){
 
     function addMoney(delta) {
         money += delta * moneyMulti;
-        $("#balance").html(money.toFixed(2));
+        $("#balance").html("$"+money.toFixed(2));
         var time = new Date().getTime() - startTime / 1000;
         moneyHistory.push({time: time, money: money});
         plotGraph(time);
