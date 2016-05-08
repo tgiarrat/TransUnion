@@ -431,8 +431,10 @@ $(document).ready(function (){
         uber: (function() {return new Task("Uber", DAY, 200, 0)}),
         getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
 
+
         engineering: (function() {return new Task("Study Engineering", DAY, 200, 50)}),
         construction: (function() {return new Task("Study Construction", DAY, 200, 50)}),
+
     };
 
     // POPULATE ITEMS
