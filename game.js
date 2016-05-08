@@ -13,6 +13,8 @@ var creditHistory = [];
 
 var money = 0;
 var creditScore = 0;
+var moneyMulti = 1;
+var creditMulti = 1;
 
 var ASSETS = $('.assets');
 var TASKS = $('.tasks');
@@ -25,19 +27,16 @@ addMoney(5000);
 addCredit(500);
 
 function addMoney(delta) {
-    money = delta + money > 0 ? money + delta : 0;
+    money += delta * moneyMulti;
     $("#balance").html(money.toFixed(2));
     var time = new Date().getTime() - startTime / 1000;
     moneyHistory.push({time: time, money: money});
     plotGraph(time);
 }
 function addCredit(delta) {
-    if (creditScore + delta < 0) {
-        creditScore = 0;
-    }else if (creditScore + delta > 850){
-        creditScore = 850;
-    }
-
+    creditScore += delta * creditMulti;
+	if (creditScore > 850) creditScore = 849;
+	if (creditScore < 300) creditScore = 299;
     $("#credit").html(creditScore.toFixed(2));
     var time = new Date().getTime() - startTime / 1000;
     creditHistory.push({time: time, creditScore: creditScore});
@@ -141,6 +140,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
             this.balanceDom.html(Math.floor(this.balance));
 
             this.button.addClass('disabled');
+			addCredit( 10/this.numPayments );
         }
         if (this.numPayments <= 1) {
             this.dom.remove();
@@ -151,7 +151,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.endOfPeriod = function () {
         if (this.payment !== 0) {
             this.balance += 1 + this.payment * this.dpr * this.period / DAY;
-            addCredit(-100); //TODO ACTUALLY EFFECT SCORE
+
+            addCredit(-50); //TODO ACTUALLY EFFECT SCORE
             
         }
 
@@ -285,7 +286,7 @@ var Asset = function (name, image, tasks, baseValue, minimumCredit, buffs) {
     this.baseValue = baseValue;
     this.minimumCredit = minimumCredit;
     this.inputDeductor = inputDeductor;
-
+	this.buffs = buffs;
     this.price = baseValue + (baseValue * (0.1 - 0.1*(creditScore/850)));
 };
 
@@ -309,8 +310,10 @@ var sellAsset = function(parentSellDom) {
             var task = this.tasks[i];
             destroyTask.call(task);
         }
-
+		moneyMulti -= .05;
+		creditMulti -= .02;
         addMoney(this.baseValue);
+		addCredit(-this.buffs);
 
         this.dom.remove();
         initAsset.call(this, true, parentSellDom, this.infoDom);
@@ -321,9 +324,10 @@ var buyAsset = function(parentBuyDom) {
     if (creditScore < this.minimumCredit) return alert("not enough credit");
     if (this.storeAsset) {
         addMoney(-this.price);
-
+		moneyMulti += .05;
+		creditMulti += .02;
         // TODO INCREMENT THE CREDIT FUCKING SCORE
-
+		addCredit(this.buffs);
         this.dom.remove();
 
         initAsset.call(this, false, parentBuyDom, this.infoDom);
@@ -389,7 +393,7 @@ var ALL_TASKS = {
 // POPULATE ITEMS
 var ALL_ITEMS = [
     new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment()], 30000, {}),
-    new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}),
+    new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
     new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
 
     new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic()], 60, {}),
@@ -401,16 +405,20 @@ var ALL_ITEMS = [
     new Asset("747", "./mansion.jpg", [], 150000, {}),
 
     new Asset("Cat", "./mansion.jpg", [], 150000, {}),
-    new Asset("Dog", "./mansion.jpg", [], 150000, {}),
+    new Asset("Dog", "./mansion.jpg", [], 150000, {}, 10),
 
-    new Asset("Computer", "./mansion.jpg", [], 150000, {}),
+    new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
 
-    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried], 150000, {}),
+    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
 
     new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
     new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
 
     new Asset("Mic", "./mansion.jpg", [], 150000, {}),
+	
+	new Asset("Stock A", "./mansion.jpg", [], 1000000, {}, 30),
+	new Asset("Stock B", "./mansion.jpg", [], 2000000, {}, 30),
+	new Asset("Stock C", "./mansion.jpg", [], 3000000, {}, 30),
     ];
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
@@ -424,4 +432,29 @@ for (var i = 0; i < SELECTED_TASKS.length; i ++) {
     var task = SELECTED_TASKS[i];
     initTask.call(task, $('.task-table'));
 }
+var go = function(score, type, action) {
 
+<<<<<<< HEAD
+=======
+	var data = [];
+	data["score"] = score;
+	data["event"] = [];
+	data["event"][type] = action;
+	
+	if (0 == 0){
+		$.ajax({
+			dataType: "json",
+			contentType: "application/json",
+			url: "http://ec2-52-53-177-180.us-west-1.compute.amazonaws.com/score-simulator/scoresim/simulateScore",
+			type: "POST",
+			data,
+			success: function(res) { console.log(res.score);  },
+			error:   function(res) { console.warn(res); }
+		});
+	}
+	else
+		credit += 0;
+}
+updateStats();
+
+>>>>>>> c6013f6fb98da7628a40e7f5fc5f591c4dab9ac2
