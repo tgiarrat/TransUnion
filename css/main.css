@@ -37,6 +37,7 @@ a img{
     position: fixed !important;
     overflow: hidden;
     z-index: 99999;
+    
 }
 
 .navbar-fixed-top {
@@ -48,6 +49,7 @@ a img{
 .tab {
     margin-bottom:0px;
     background-color: #f0f0f0;
+    background: linear-gradient(to bottom, #f0f0f0, #f5f5f5, #f5f5f5, #f0f0f0);
 }
 .tab-left {
     margin-bottom:0px;
@@ -61,6 +63,7 @@ a img{
 .info {
     text-align: center;
     background-color:#a9d161;
+    background: linear-gradient(to bottom, #a9d161, #89b141, #89b141, #a9d161);
     height: 130px;
     margin: 0px;
     width: 100%;

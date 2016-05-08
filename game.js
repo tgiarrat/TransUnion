@@ -2,19 +2,6 @@ $(document).ready(function (){
 
 	var loans = [];
 
-    function bankrupt() {
-        var temp;
-        temp = loans.pop();
-            while(temp) {
-                temp.balance = 0;
-                temp.payment = 0;
-                temp.numPayments = 0;
-                temp.makePayment();
-                temp = loans.pop();
-            }
-        addCredit(-400);
-    }
-
     
     var SECOND = 1000;
     var MINUITE = SECOND * 60;
@@ -42,7 +29,21 @@ $(document).ready(function (){
     creditHistory.push({time: 0, credit: creditScore});
 
     addMoney(5000);
-    addCredit(500);
+    addCredit(710);
+    
+   function bankrupt() {
+        var temp;
+        temp = loans.pop();
+            while(temp) {
+                temp.balance = 0;
+                temp.payment = 0;
+                temp.numPayments = 0;
+                temp.makePayment();
+                temp = loans.pop();
+            }
+        addCredit(-400);
+        addMoney(-money);
+   }
 
     function addMoney(delta) {
         money += delta * moneyMulti;
@@ -67,15 +68,21 @@ $(document).ready(function (){
         return num.toFixed(2);
         //return "<p class='money'>$" + num.toFixed(2) + "</p>";
     }
-
+    var totalLoans = 0;
     function getLoan(scale) {
+       if (totalLoans >= creditScore/100.0) {
+          
+          
+          return alert("Need better credit for more loans.");
+       }
+          
         var loanNames = ["Car", "House", "Food", "School"];
-
+        totalLoans++;
         var name = loanNames[Math.floor(Math.random() * loanNames.length)];
         var dpr = 0.6 * ((1100-creditScore) / 1200) * Math.random();
         var amount = Math.ceil(Math.random() * scale + scale);
 
-        var length = Math.floor(Math.random() * (SECOND * 5) + SECOND * 5);
+        var length = Math.floor(Math.random() * (MINUITE * 5) + MINUITE * 5);
         var numPayments = Math.floor(Math.random() * 20 + 5);
 		addCredit(-30);
         var loan = new Loan(name, amount, length * numPayments, dpr, numPayments);
@@ -166,6 +173,7 @@ $(document).ready(function (){
         };
 
         this.destroy = function () {
+            totalLoans--;
             this.done = true;
         };
 
@@ -434,8 +442,8 @@ $(document).ready(function (){
         getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
 
 
-        engineering: (function() {return new Task("Study Engineering", DAY, 200, 50)}),
-        construction: (function() {return new Task("Study Construction", DAY, 200, 50)}),
+        engineering: (function() {return new Task("Study Engineering", DAY, 200, 50,20000,true)}),
+        construction: (function() {return new Task("Study Construction", DAY, 200, 50,10000,true)}),
 
     };
 
@@ -445,13 +453,13 @@ $(document).ready(function (){
         new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
         new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
 
-        new Asset("Bike", "./images/bike.jpg", [], 60, {}),
-        new Asset("Scooter", "./images/scooter.jpg", [], 30, {}),
+        new Asset("Bike", "./images/scooter.jpg", [], 60, {}),
+        new Asset("Scooter", "./images/bike.jpg", [], 30, {}),
         new Asset("Car", "./images/car.jpg", [ALL_TASKS.uber()], 17000, {}),
         new Asset("Truck", "./images/truck.jpg", [ALL_TASKS.uber()], 15000, {}),
 
-        new Asset("Propeller Plane", "./images/plane.jpg", [], 150000, {}),
-        new Asset("747", "./images/jet.jpg", [], 30000000, {}),
+        new Asset("Propeller Plane", "./images/prop.jpg", [], 150000, {}),
+        new Asset("747", "./images/plane.png", [], 30000000, {}),
 
         new Asset("Cat", "./images/cat.jpg", [ALL_TASKS.petCat()], 139, {}),
         new Asset("Dog", "./images/dog.jpg", [ALL_TASKS.petDog()], 340, {}, 10),
@@ -460,13 +468,13 @@ $(document).ready(function (){
 
         new Asset("Wedding Ring", "./images/ring.jpg", [ALL_TASKS.getMarried()], 150000, {}, Math.random()*100 - 50),
 
-        new Asset("Engineering Book", "./images/engbook.jpg", [ALL_TASKS.engineering()], 150000, {}),
-        new Asset("Construction Book", "./images/consbook.jpg", [ALL_TASKS.construction()], 150000, {}),
+        new Asset("Engineering Book", "./images/book.jpg", [ALL_TASKS.engineering()], 150000, {}),
+        new Asset("Construction Book", "./images/book2.jpg", [ALL_TASKS.construction()], 150000, {}),
 
 
-        new Asset("Stock A", "./mansion.jpg", [], 1000000, {}, 30),
-        new Asset("Stock B", "./mansion.jpg", [], 2000000, {}, 30),
-        new Asset("Stock C", "./mansion.jpg", [], 3000000, {}, 30),
+        new Asset("Stock A", "./images/stockA.png", [], 1000000, {}, 30),
+        new Asset("Stock B", "./images/stockB.png", [], 2000000, {}, 30),
+        new Asset("Stock C", "./images/stockC.png", [], 3000000, {}, 30),
         ];
 
     for (var i = 0; i < ALL_ITEMS.length; i ++) {
