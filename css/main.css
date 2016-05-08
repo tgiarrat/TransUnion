@@ -197,6 +197,14 @@ div.store, div.owned {
     border-radius:15px;
 
 }
+
+.btn-danger {
+	width: 100%;
+	float: left;
+	height: 60px;
+	margin-bottom: 30px;
+}
+
 .fix {
     position:fixed;
 }
