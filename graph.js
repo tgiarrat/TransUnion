@@ -1,4 +1,4 @@
-function plotGraph() {
+function plotGraph(history) {
     $('.graph').empty();
 
     // define dimensions of graph
@@ -9,10 +9,6 @@ function plotGraph() {
     // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
     var data = [];
 
-    for (var i = 0; i < moneyHistory.length; i ++) {
-        data.push(moneyHistory[i].money);
-    }
-    console.log(data);
 
     // X scale will fit all values from data[] within pixels 0-w
     var x = d3.scale.linear().domain([0, data.length]).range([0, w]);
