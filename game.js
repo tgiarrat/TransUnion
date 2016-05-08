@@ -409,16 +409,16 @@ var ALL_ITEMS = [
 
     new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
 
-    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
+    new Asset("Wedding Ring", "./images/ring.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
 
     new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
     new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
 
     new Asset("Mic", "./mansion.jpg", [], 150000, {}),
 	
-	new Asset("Stock A", "./mansion.jpg", [], 1000000, {}, 30),
-	new Asset("Stock B", "./mansion.jpg", [], 2000000, {}, 30),
-	new Asset("Stock C", "./mansion.jpg", [], 3000000, {}, 30),
+	new Asset("Stock A", "./images/stockA.png", [], 1000000, {}, 30),
+	new Asset("Stock B", "./images/stockB.png", [], 2000000, {}, 30),
+	new Asset("Stock C", "./images/stockC.png", [], 3000000, {}, 30),
     ];
 
 for (var i = 0; i < ALL_ITEMS.length; i ++) {
