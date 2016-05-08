@@ -1,4 +1,5 @@
 function plotGraph() {
+    $('.graph').empty();
 
     // define dimensions of graph
     var m = [80, 80, 80, 80]; // margins

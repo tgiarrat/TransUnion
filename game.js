@@ -182,7 +182,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         this.domParent = domParent;
 
         addMoney(this.amount);
-        addCreditScore(Math.random() * 50);
+        addCredit(Math.random() * 50);
         //this.draw.call(this);
         //this.button.removeClass('disabled');
         //this.domParent.prepend(this.dom);
@@ -434,8 +434,6 @@ for (var i = 0; i < SELECTED_TASKS.length; i ++) {
 }
 var go = function(score, type, action) {
 
-<<<<<<< HEAD
-=======
 	var data = [];
 	data["score"] = score;
 	data["event"] = [];
@@ -455,6 +453,3 @@ var go = function(score, type, action) {
 	else
 		credit += 0;
 }
-updateStats();
-
->>>>>>> c6013f6fb98da7628a40e7f5fc5f591c4dab9ac2
