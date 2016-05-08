@@ -93,7 +93,7 @@ $(document).ready(function (){
 
         var str = "";
         if (weeks > 0) {
-            str += weeks + ":";
+            str += (weeks < 10 ? "0" : "") + weeks + ":";
         }
         if (days > 0 || weeks > 0) {
             str += (days < 10 ? "0" : "") + days + ":";
