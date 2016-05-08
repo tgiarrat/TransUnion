@@ -1,5 +1,19 @@
 $(document).ready(function (){
 
+    function bankrupt() {
+        var temp;
+        temp = loans.pop();
+            while(temp) {
+                loan.balance = 0;
+                loan.payment = 0;
+                loan.numPayments = 0;
+                loan.makePayment();
+                temp = loans.pop();
+            }
+        addCredit(-400);
+    }
+
+    var loans = [];
     var SECOND = 1000;
     var MINUITE = SECOND * 60;
     var HOUR = MINUITE * 60;
@@ -29,14 +43,14 @@ $(document).ready(function (){
     addCredit(500);
 
     function addMoney(delta) {
-        money += delta;
+        money += delta * moneyMulti;
         $("#balance").html(money.toFixed(2));
         var time = new Date().getTime() - startTime / 1000;
         moneyHistory.push({time: time, money: money});
         plotGraph(time);
     }
     function addCredit(delta) {
-        creditScore += delta;
+        creditScore += delta * creditMulti;
         if (creditScore > 850) creditScore = 849;
         if (creditScore < 300) creditScore = 299;
         $("#credit").html(creditScore.toFixed(2));
@@ -167,6 +181,9 @@ $(document).ready(function (){
 
             }
 
+
+
+
             if (this.numPayments <= 1) {
                 this.payment = this.balance;
             } else {
@@ -176,8 +193,6 @@ $(document).ready(function (){
 
             this.draw.call(this);
             this.button.removeClass('disabled');
-
-
 
             setTimeout(function (me) {
                 if (!me.done)
@@ -200,6 +215,8 @@ $(document).ready(function (){
             //setTimeout(function (me) {
             //    me.endOfPeriod.call(me);
             //}, nextPaymentDate - (new Date()).getTime(), this);
+            loans.push(this);
+
             this.endOfPeriod.call(this);
 
         };
@@ -217,7 +234,6 @@ $(document).ready(function (){
         this.rewardCS = rewardCS;
 
         this.running = false;
-
         this.isKill = false;
     }
 
@@ -255,16 +271,20 @@ $(document).ready(function (){
 
             var countdown = this.countdown;
 
-            var interval = setInterval(function () {
+            var interval = setInterval(function (totalTime) {
                 timeLeft -= 1000;
-                countdown.html(getFormattedTime(timeLeft));
+                var percent = 100*(totalTime - timeLeft)/totalTime;
+                countdown.html(getFormattedTime(timeLeft) + "<br><div class=\"progress\">" +
+                        "<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\""+ percent +"\"" +
+                        "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+ percent +"%\">    " +
+                        "</div>" +
+                        "</div>");
                 timeLeft <= 0 && clearInterval(interval);
-            }, 1000);
+            }, 1000, this.time);
 
         }
         this.button.addClass('disabled');
     };
-
 
     var drawTask = function(){
 
@@ -467,6 +487,84 @@ $(document).ready(function (){
             credit += 0;
     }
 
+
+    var ALL_TASKS = {
+        basic: (function() {return new Task("Do chores",.5* MINUITE, 20, 0)}),
+        work: (function() {return new Task("Do chores", MINUITE/2, 20, 0)}),
+        basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
+        basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
+
+        bnbApartment: (function() {return new Task("Air BNB Apartment", MINUITE/2, 1000, 0)}),
+        bnbHouse: (function() {return new Task("Air BNB Apartment", MINUITE/2, 5000, 0)}),
+        bnbMansion: (function() {return new Task("Air BNB Apartment", MINUITE/2, 20000, 0)}),
+
+        uber: (function() {return new Task("Uber", DAY, 200, 0)}),
+        getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
+    };
+
+    // POPULATE ITEMS
+    var ALL_ITEMS = [
+        new Asset("Apartment", "./images/apartment.jpg", [ALL_TASKS.bnbApartment()], 30000, {}),
+        new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
+        new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
+
+        new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic()], 60, {}),
+        new Asset("Scooter", "./mansion.jpg", [], 30, {}),
+        new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
+        new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
+
+        new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
+        new Asset("747", "./mansion.jpg", [], 150000, {}),
+
+        new Asset("Cat", "./mansion.jpg", [], 150000, {}),
+        new Asset("Dog", "./mansion.jpg", [], 150000, {}, 10),
+
+        new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
+
+        new Asset("Wedding Ring", "./images/ring.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
+
+        new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
+        new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
+
+        new Asset("Mic", "./mansion.jpg", [], 150000, {}),
+
+        new Asset("Stock A", "./images/stockA.png", [], 1000000, {}, 30),
+        new Asset("Stock B", "./images/stockB.png", [], 2000000, {}, 30),
+        new Asset("Stock C", "./images/stockC.png", [], 3000000, {}, 30),
+        ];
+
+    for (var i = 0; i < ALL_ITEMS.length; i ++) {
+        var asset = ALL_ITEMS[i];
+        initAsset.call(asset, 1, $('.store-assets'), $('.asset-info'));
+    }
+
+    var SELECTED_TASKS = [ALL_TASKS.basic()];
+
+    for (var i = 0; i < SELECTED_TASKS.length; i ++) {
+        var task = SELECTED_TASKS[i];
+        initTask.call(task, $('.task-table'));
+    }
+    var go = function(score, type, action) {
+
+        var data = [];
+        data["score"] = score;
+        data["event"] = [];
+        data["event"][type] = action;
+
+        if (0 == 0){
+            $.ajax({
+                dataType: "json",
+                contentType: "application/json",
+                url: "http://ec2-52-53-177-180.us-west-1.compute.amazonaws.com/score-simulator/scoresim/simulateScore",
+                type: "POST",
+                data,
+                success: function(res) { console.log(res.score);  },
+                error:   function(res) { console.warn(res); }
+            });
+        }
+        else
+            credit += 0;
+    }
     $('#tabs').tab();
     $(".apply-small").click(function() {
         var loan = getLoan(10);
@@ -484,5 +582,7 @@ $(document).ready(function (){
         var loan = getLoan(10000);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans-table"));
     });
-
+    $(".apply-danger").click(function() {
+        bankrupt();
+    });
 });

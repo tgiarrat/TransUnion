@@ -1,10 +1,10 @@
-<!DOCTYPE HTML>
+	<!DOCTYPE HTML>
 <html>
     <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/vendor/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.css">
 
-
+	
         <link rel="stylesheet" href="css/reset.css" type="text/css">
         <link rel="stylesheet" href="css/main.css" type="text/css">
         <title>The Game of Life</title>
@@ -21,24 +21,23 @@
 
                     <div class="col-xs-4">
 
-                        <h1 style="padding-top: 20px" class="main-info money">$3402035</h1>
+                        <h1 style="padding-top: 20px" id='balance' class="main-info money">$</h1>
                     </div>
 
                     <div class="col-xs-4">
                         <h2 class ="nopad" style="padding-top: 10px !important;"><img style="height: 40px;" src="images/logoBlue.svg"/><br>Credit Score  </h2>
 
-                        <h1 class="main-info credit" style="margin-top: 10px;">240</h1>
+                        <h1 class="main-info credit" id='credit' style="margin-top: 10px;"></h1>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="content">
-
             <ul id="tabs" class="nav nav-tabs nav-justified navbar-fixed-top " data-tabs="tabs">
                 <li  class="col-xs-6 tab tab-left active"><a href="#assets" data-toggle="tab"><img src="images/home.png"/><br>Assets</a></li>
                 <li class="col-xs-6 tab"><a href="#tasks" data-toggle="tab"><img src="images/task.png"/><br>Tasks</a></li>
-                <li class="col-xs-6 tab tab-right"><a href="#money" data-toggle="tab"><img src="images/loan.png"/><br>Money</a></li>
+                <li class="col-xs-6 tab tab-right"><a href="#moneyTab" data-toggle="tab"><img src="images/loan.png"/><br>Money</a></li>
             </ul>
 
 
@@ -81,35 +80,33 @@
 
                 <div class="tab-pane" id="tasks">
                     <div class="inner-tab-pane">
-
-
-
-
+                        <div class="task-table"></div>
                     </div>
-
-
                 </div>
 
-                <div class="tab-pane" id="money">
+                <div class="tab-pane" id="moneyTab">
                     <div class="inner-tab-pane">
 
 
-
-
+						
+                        <h1> Apply For a Loan! </h1>
 
                         <button class="btn btn-primary apply-small">Apply for school loan</button>
                         <button class="btn btn-primary apply-medium">Apply for car loan</button>
                         <button class="btn btn-primary apply-large">Apply for house loan</button>
                         <button class="btn btn-primary apply-x-large">Apply for investment loan</button>
-                        <div class="loans">
+                        <div class="loans-table">
                         </div>
 
                         <br>
+                        
 
-                        <div class="container graph-container  well" style="float: left;">
+                        <div class="container graph-container  well" style="float: left; width: 100%;">
                             <div class="col-xs-12 graph">
                             </div>
                         </div>
+						
+						<button class="btn btn-danger apply-danger">Declare Bankruptcy</button>
 
                     </div>
                 </div>
@@ -118,33 +115,14 @@
 
 
 
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/vendor/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js"></script>
-            <script type="text/javascript" src="./game.js"></script>
-            <script type="text/javascript" src="./graph.js"></script>
-            <script type="text/javascript">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/vendor/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js"></script>
+        <script type="text/javascript" src="./game.js"></script>
+        <script type="text/javascript" src="./graph.js"></script>
+        <script type="text/javascript">
 
-$(document).ready(function (){
-    $('#tabs').tab();
-    $(".apply-small").click(function() {
-        var loan = getLoan(10);
-        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
-    });
-    $(".apply-medium").click(function() {
-        var loan = getLoan(100);
-        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
-    });
-    $(".apply-large").click(function() {
-        var loan = getLoan(1000);
-        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
-    });
-    $(".apply-x-large").click(function() {
-        var loan = getLoan(10000);
-        loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
-    });
-});
+        </script>
 
-            </script>  
     </body>
 </html>
