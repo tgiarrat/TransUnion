@@ -28,8 +28,26 @@ $(document).ready(function (){
     moneyHistory.push({time: 0, money: money});
     creditHistory.push({time: 0, credit: creditScore});
 
-    addMoney(5000);
-    addCredit(710);
+    
+    
+    load();
+    
+    function load() {
+       if (Cookies.get('money')) {
+          money = parseInt(Cookies.get('money'));
+          $("#balance").html("$"+money.toFixed(2));
+       }
+       else {
+          addMoney(5000);
+
+       }
+    }
+     addCredit(710);
+     
+    function save() {
+       Cookies.remove('money');
+       Cookies.set('money', money, { expires: 7 });
+    }
     
    function bankrupt() {
         var temp;
@@ -46,11 +64,13 @@ $(document).ready(function (){
    }
 
     function addMoney(delta) {
+         
         money += delta * moneyMulti;
         $("#balance").html("$"+money.toFixed(2));
         var time = new Date().getTime() - startTime / 1000;
         moneyHistory.push({time: time, money: money});
         plotGraph(time);
+        save();
     }
     function addCredit(delta) {
         creditScore += delta * creditMulti;
