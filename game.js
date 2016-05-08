@@ -27,14 +27,14 @@ addMoney(5000);
 addCredit(500);
 
 function addMoney(delta) {
-    money += delta * moneyMulti;
+    money += delta;
     $("#balance").html(money.toFixed(2));
     var time = new Date().getTime() - startTime / 1000;
     moneyHistory.push({time: time, money: money});
     plotGraph(time);
 }
 function addCredit(delta) {
-    creditScore += delta * creditMulti;
+    creditScore += delta;
 	if (creditScore > 850) creditScore = 849;
 	if (creditScore < 300) creditScore = 299;
     $("#credit").html(creditScore.toFixed(2));
@@ -85,7 +85,8 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
     this.dpr = dpr;
 
     this.draw = function(){
-        this.dom = $(" <div class='loan'>" +
+        if (!this.dom)
+            this.dom = $(" <div class='loan'>" +
                 "Loan " + this.name + " - Balance: <b class='balance'>$" + this.balance.toFixed(2) + "</b>"+
                 "<br>Payment amount: <b class='payment'>$" + this.payment.toFixed(2) + "</b>" +
                 "<br>APR: " + (this.dpr*100).toFixed(3) + "% - Payments left: " + this.numPayments +
@@ -133,14 +134,15 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
 
     this.makePayment = function() {
         if (this.payment !== 0) {
-            addMoney(-this.payment);
+            console.log(this.payment);
+            addMoney(-1 * this.payment);
             this.balance -= this.payment;
             this.payment = 0;
             this.paymentDom.html(Math.floor(this.payment));
             this.balanceDom.html(Math.floor(this.balance));
 
             this.button.addClass('disabled');
-			addCredit( 10/this.numPayments );
+			addCredit( this.numPayments * 2 );
         }
         if (this.numPayments <= 1) {
             this.dom.remove();
@@ -152,7 +154,7 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         if (this.payment !== 0) {
             this.balance += 1 + this.payment * this.dpr * this.period / DAY;
 
-            addCredit(-50); //TODO ACTUALLY EFFECT SCORE
+            addCredit(-1 * 50); //TODO ACTUALLY EFFECT SCORE
             
         }
 
@@ -313,21 +315,21 @@ var sellAsset = function(parentSellDom) {
 		moneyMulti -= .05;
 		creditMulti -= .02;
         addMoney(this.baseValue);
-		addCredit(-this.buffs);
+		addCredit(-10 * Math.random());
 
         this.dom.remove();
         initAsset.call(this, true, parentSellDom, this.infoDom);
     }
 };
 var buyAsset = function(parentBuyDom) {
-    if (this.price > money) return alert("not enough money " + this.price + " " + money);
+    if (this.price > money) return alert("not enough money");
     if (creditScore < this.minimumCredit) return alert("not enough credit");
     if (this.storeAsset) {
         addMoney(-this.price);
 		moneyMulti += .05;
 		creditMulti += .02;
         // TODO INCREMENT THE CREDIT FUCKING SCORE
-		addCredit(this.buffs);
+		addCredit(10 * Math.random());
         this.dom.remove();
 
         initAsset.call(this, false, parentBuyDom, this.infoDom);
@@ -338,7 +340,9 @@ var lastDom;
 var drawAsset = function(){
     var tasksString = "";
 	
-    for (var task in this.tasks) {
+    for (var i = 0; i < this.tasks.length; i++) {
+        var task = this.tasks[i];
+        console.log(task.name);
         tasksString += task.name + " ";
     }
 
@@ -351,7 +355,7 @@ var drawAsset = function(){
             "<h2>" + this.name + "</h2>" +
             "<br><img class='assetImg' src = '" + this.image + "'>" + 
             "<br>Base Price: " + this.baseValue + 
-            "<br>Activities: " + this.tasksString +
+            "<br>Activities: " + (tasksString ? tasksString : "None")+
             "</div></div>");
 
     this.button = this.dom.find('button');
@@ -377,10 +381,10 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
-    basic: (function() {return new Task("Do chores",5* MINUITE, 20, 0)}),
-    work: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
+    basic: (function() {return new Task("Do chores", 5* MINUITE, 20, 0)}),
+
+    petDog: (function() {return new Task("Pet the dog", MINUITE, 20, 0)}),
+    petCat: (function() {return new Task("Pet the dog", YEAR, 20, 0)}),
 
     bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)}),
     bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)}),
@@ -388,6 +392,9 @@ var ALL_TASKS = {
 
     uber: (function() {return new Task("Uber", DAY, 200, 0)}),
     getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
+
+    engineering: (function() {return new Task("Study Engineering", DAY, 200, 50)}),
+    construction: (function() {return new Task("Study Construction", DAY, 200, 50)}),
 };
 
 // POPULATE ITEMS
@@ -396,25 +403,24 @@ var ALL_ITEMS = [
     new Asset("House", "./images/house.jpg", [ALL_TASKS.bnbHouse()], 150000, {}, 20),
     new Asset("Mansion", "./images/mansion.jpg", [ALL_TASKS.bnbMansion()], 150000, {}),
 
-    new Asset("Bike", "./mansion.jpg", [ALL_TASKS.basic()], 60, {}),
+    new Asset("Bike", "./mansion.jpg", [], 60, {}),
     new Asset("Scooter", "./mansion.jpg", [], 30, {}),
-    new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
-    new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 150000, {}),
+    new Asset("Car", "./mansion.jpg", [ALL_TASKS.uber()], 17000, {}),
+    new Asset("Truck", "./mansion.jpg", [ALL_TASKS.uber()], 15000, {}),
 
     new Asset("Propeller Plane", "./mansion.jpg", [], 150000, {}),
-    new Asset("747", "./mansion.jpg", [], 150000, {}),
+    new Asset("747", "./mansion.jpg", [], 30000000, {}),
 
-    new Asset("Cat", "./mansion.jpg", [], 150000, {}),
-    new Asset("Dog", "./mansion.jpg", [], 150000, {}, 10),
+    new Asset("Cat", "./mansion.jpg", [ALL_TASKS.petCat()], 139, {}),
+    new Asset("Dog", "./mansion.jpg", [ALL_TASKS.petDog()], 340, {}, 10),
 
     new Asset("Computer", "./mansion.jpg", [], 150000, {}, 5),
 
-    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried], 150000, {}, Math.random()*100 - 50),
+    new Asset("Wedding Ring", "./mansion.jpg", [ALL_TASKS.getMarried()], 150000, {}, Math.random()*100 - 50),
 
-    new Asset("Engineering Book", "./mansion.jpg", [], 150000, {}),
-    new Asset("Construction Book", "./mansion.jpg", [], 150000, {}),
+    new Asset("Engineering Book", "./mansion.jpg", [ALL_TASKS.engineering()], 150000, {}),
+    new Asset("Construction Book", "./mansion.jpg", [ALL_TASKS.construction()], 150000, {}),
 
-    new Asset("Mic", "./mansion.jpg", [], 150000, {}),
 	
 	new Asset("Stock A", "./mansion.jpg", [], 1000000, {}, 30),
 	new Asset("Stock B", "./mansion.jpg", [], 2000000, {}, 30),
