@@ -105,6 +105,8 @@
                             <div class="col-xs-12 graph">
                             </div>
                         </div>
+						
+						<button class="btn btn-danger apply-danger">Declare Bankruptcy</button>
 
                     </div>
                 </div>
@@ -121,22 +123,30 @@
         <script type="text/javascript">
 
 $(document).ready(function (){
+
     $('#tabs').tab();
     $(".apply-small").click(function() {
         var loan = getLoan(10);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+		
     });
     $(".apply-medium").click(function() {
         var loan = getLoan(100);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+
     });
     $(".apply-large").click(function() {
         var loan = getLoan(1000);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+
     });
     $(".apply-x-large").click(function() {
         var loan = getLoan(10000);
         loan.init.call(loan, (new Date()).getTime() + 1000, $(".loans"));
+		loans.push(loan);
+    });
+	$(".apply-danger").click(function() {
+        bankrupt();
     });
 });
 

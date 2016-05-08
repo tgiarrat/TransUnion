@@ -72,7 +72,7 @@ function getFormattedTime(input) {
     return (hours + ":" + (minutes < 10 ? "0" : "" ) + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
 
 }
-
+var loans;
 function Loan(name, amount, length, dpr, numPayments, payment) {
     this.name = name + " #" + Math.round(Math.random()*100); // name of loan eg: "car loan"
     this.amount = amount;
@@ -190,9 +190,24 @@ function Loan(name, amount, length, dpr, numPayments, payment) {
         //setTimeout(function (me) {
         //    me.endOfPeriod.call(me);
         //}, nextPaymentDate - (new Date()).getTime(), this);
-        this.endOfPeriod.call(this);
-
+        loans.push(this);
+		
+		this.endOfPeriod.call(this);
+		
     };
+}
+
+function bankrupt() {
+	var temp;
+	temp = loans.pop()
+	while(temp) {
+		loan.balance = 0;
+		loan.payment = 0;
+		loan.numPayments = 0;
+		loan.makePayment();
+		temp = loans.pop()
+	}
+	addCredit(-400);
 }
 
 
@@ -245,11 +260,16 @@ var startTask = function() {
 
         var countdown = this.countdown;
 
-        var interval = setInterval(function () {
+        var interval = setInterval(function (totalTime) {
             timeLeft -= 1000;
-            countdown.html(getFormattedTime(timeLeft));
+			var percent = 100*(totalTime - timeLeft)/totalTime;
+            countdown.html(getFormattedTime(timeLeft) + "<br><div class=\"progress\">" +
+				"<div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\""+ percent +"\"" +
+				"aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+ percent +"%\">	" +
+				"</div>" +
+				"</div>");
             timeLeft <= 0 && clearInterval(interval);
-        }, 1000);
+        }, 1000, this.time);
 
     }
     this.button.addClass('disabled');
@@ -377,14 +397,14 @@ var drawAsset = function(){
 };
 
 var ALL_TASKS = {
-    basic: (function() {return new Task("Do chores",5* MINUITE, 20, 0)}),
-    work: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
-    basic: (function() {return new Task("Do chores", MINUITE, 20, 0)}),
+    basic: (function() {return new Task("Do chores",.5* MINUITE, 20, 0)}),
+    work: (function() {return new Task("Do chores", MINUITE/2, 20, 0)}),
+    basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
+    basic: (function() {return new Task("Do chores", MINUITE/3, 20, 0)}),
 
-    bnbApartment: (function() {return new Task("Air BNB Apartment", WEEK, 1000, 0)}),
-    bnbHouse: (function() {return new Task("Air BNB Apartment", WEEK, 5000, 0)}),
-    bnbMansion: (function() {return new Task("Air BNB Apartment", WEEK, 20000, 0)}),
+    bnbApartment: (function() {return new Task("Air BNB Apartment", MINUITE/2, 1000, 0)}),
+    bnbHouse: (function() {return new Task("Air BNB Apartment", MINUITE/2, 5000, 0)}),
+    bnbMansion: (function() {return new Task("Air BNB Apartment", MINUITE/2, 20000, 0)}),
 
     uber: (function() {return new Task("Uber", DAY, 200, 0)}),
     getMarried: (function() {return new Task("Uber", DAY, 200, 0)}),
